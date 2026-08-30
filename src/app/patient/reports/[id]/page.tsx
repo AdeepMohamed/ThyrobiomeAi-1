@@ -27,6 +27,7 @@ import {
   Sparkles,
   ArrowLeft,
   ChevronRight,
+  Camera,
 } from 'lucide-react'
 import { formatDate, getBMICategory } from '@/lib/utils'
 import { OverallStatus, LabClassification } from '@prisma/client'
@@ -332,6 +333,29 @@ export default async function FullReportViewPage({ params }: PageProps) {
             <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
               This nutritional blueprint is specifically tailored to your laboratory findings—prioritizing 5'-deiodinase enzyme cofactors (Selenium, Zinc) to support peripheral T4-to-T3 hormone conversion, gentle prebiotic soluble fibers for gut motility along the gut-thyroid axis, and tyrosine-rich proteins.
             </p>
+          </div>
+
+          {/* 5-Day Diet Tracker Call-To-Action */}
+          <div className="no-print flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-teal-300 bg-gradient-to-r from-teal-50 via-emerald-50/60 to-white p-4 dark:border-teal-800 dark:from-teal-950/60 dark:to-slate-900 shadow-xs">
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl bg-teal-600 p-2.5 text-white shrink-0">
+                <Camera className="h-5 w-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
+                  Interactive 5-Day Meal Schedule & Photo Tracker
+                </h4>
+                <p className="text-[11px] text-slate-600 dark:text-slate-400">
+                  Follow the structured Day 1–5 protocol, verify each meal with photos, and track digestion.
+                </p>
+              </div>
+            </div>
+            <Link href={`/patient/diet-plan?reportId=${report.id}`}>
+              <Button size="sm" variant="gradient" className="gap-1.5 font-semibold text-xs whitespace-nowrap shadow-xs">
+                <Camera className="h-3.5 w-3.5" />
+                Track 5-Day Meals with Photos &rarr;
+              </Button>
+            </Link>
           </div>
 
           {/* Protein & Fiber Target Cards */}

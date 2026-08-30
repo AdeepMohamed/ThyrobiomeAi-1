@@ -15,6 +15,7 @@ import {
   Settings,
   ShieldCheck,
   Stethoscope,
+  Camera,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -66,6 +67,13 @@ const patientNavItems = [
     title: 'Report History',
     href: '/patient/reports',
     icon: FileText,
+  },
+  {
+    title: '5-Day Diet & Photos',
+    href: '/patient/diet-plan',
+    icon: Camera,
+    badge: '5-Day',
+    highlight: true,
   },
   {
     title: 'Account Settings',

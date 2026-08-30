@@ -228,6 +228,8 @@ model PatientProfile {
   medicalReports   MedicalReport[]
   aiAnalyses       AIAnalysis[]
   safetyAlerts     SafetyAlert[]
+  dietPlans        DietPlan[]
+  mealTrackingEntries MealTrackingEntry[]
 
   @@index([userId])
 }
@@ -377,6 +379,7 @@ model MedicalReport {
   patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
   labResults     LabResult[]
   aiAnalysis     AIAnalysis?
+  dietPlans      DietPlan[]
 
   @@index([patientProfileId])
   @@index([analysisStatus])
@@ -506,4 +509,64 @@ model AuditLog {
   @@index([userId])
   @@index([action])
   @@index([createdAt])
+}
+
+// ============================================================
+// 5-DAY DIET PLAN & MEAL PHOTO TRACKING
+// ============================================================
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+model DietPlan {
+  id               String   @id @default(cuid())
+  patientProfileId String
+  reportId         String?
+  title            String   @default("5-Day Precision Thyroid Diet Protocol")
+  targetBiomarkers Json?    // TSH, FT4, FT3, Antibodies snapshot
+  summary          String   @db.Text
+  planJson         Json     // Complete structured 5-day menu
+  startDate        DateTime @default(now())
+  endDate          DateTime?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  patientProfile   PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+  medicalReport    MedicalReport? @relation(fields: [reportId], references: [id], onDelete: SetNull)
+  mealEntries      MealTrackingEntry[]
+
+  @@index([patientProfileId])
+  @@index([reportId])
+  @@index([isActive])
+}
+
+model MealTrackingEntry {
+  id               String    @id @default(cuid())
+  dietPlanId       String
+  patientProfileId String
+  dayNumber        Int       // 1 to 5
+  mealType         MealType
+  mealTitle        String
+  recipeSummary    String    @db.Text
+  targetCofactors  String?   // e.g. "Selenium (120mcg), Zinc, L-Tyrosine"
+  photoUrl         String?
+  notes            String?   @db.Text
+  isCompleted      Boolean   @default(false)
+  completedAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  dietPlan       DietPlan       @relation(fields: [dietPlanId], references: [id], onDelete: Cascade)
+  patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([dietPlanId, dayNumber, mealType])
+  @@index([dietPlanId])
+  @@index([patientProfileId])
+  @@index([dayNumber])
+  @@index([isCompleted])
 }

@@ -11,6 +11,14 @@ export interface UploadResult {
 
 const LOCAL_STORAGE_DIR = path.join(process.cwd(), 'public', 'uploads')
 
+export async function uploadFile(
+  file: File | Blob,
+  prefix = 'uploads'
+): Promise<UploadResult> {
+  const filename = (file as File).name || 'file'
+  return await uploadMedicalReportFile(file, filename, prefix)
+}
+
 /**
  * Uploads a file buffer or stream. Uses Vercel Blob in production or if BLOB_READ_WRITE_TOKEN is set.
  * Falls back to public/uploads directory for local dev without blob token.
