@@ -1,0 +1,508 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum UserRole {
+  PATIENT
+  ADMIN
+  DOCTOR
+  SUPER_ADMIN
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ThyroidCondition {
+  NONE
+  HYPOTHYROIDISM
+  HYPERTHYROIDISM
+  THYROIDITIS
+  GOITRE_NODULES
+  THYROID_SURGERY
+  OTHER
+}
+
+enum LabClassification {
+  LOW
+  NORMAL
+  HIGH
+  CRITICAL_REVIEW
+  UNKNOWN
+}
+
+enum UploadStatus {
+  PENDING
+  UPLOADED
+  FAILED
+}
+
+enum ExtractionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  NOT_APPLICABLE
+}
+
+enum AnalysisStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum OverallStatus {
+  NO_MAJOR_CONCERN
+  NEEDS_ATTENTION
+  MEDICAL_REVIEW_RECOMMENDED
+  CRITICAL_REVIEW
+}
+
+enum ReviewPriority {
+  ROUTINE
+  SOON
+  PROMPT
+  URGENT
+}
+
+enum AlertType {
+  CRITICAL_REVIEW
+  DOCTOR_REVIEW_REQUIRED
+  ABNORMAL_LAB_PATTERN
+  AI_ANALYSIS_FAILED
+  REPORT_EXTRACTION_FAILED
+}
+
+enum AlertStatus {
+  NEW
+  REVIEWED
+  RESOLVED
+}
+
+enum DietType {
+  VEGETARIAN
+  NON_VEGETARIAN
+  VEGAN
+  MIXED
+  OTHER
+}
+
+enum Severity {
+  NONE
+  MILD
+  MODERATE
+  SEVERE
+}
+
+enum Frequency {
+  NEVER
+  RARELY
+  SOMETIMES
+  OFTEN
+  ALWAYS
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHT
+  MODERATE
+  ACTIVE
+  VERY_ACTIVE
+}
+
+enum StressLevel {
+  LOW
+  MODERATE
+  HIGH
+  VERY_HIGH
+}
+
+enum SleepQuality {
+  POOR
+  FAIR
+  GOOD
+  EXCELLENT
+}
+
+// ============================================================
+// AUTH MODELS
+// ============================================================
+
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+  role           UserRole  @default(PATIENT)
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  patientProfile PatientProfile?
+  adminProfile   AdminProfile?
+  auditLogs      AuditLog[]
+  sessions       Session[]
+  accounts       Account[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============================================================
+// PATIENT MODELS
+// ============================================================
+
+model PatientProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  age         Int?
+  sex         Sex?
+  height      Float?   // cm
+  weight      Float?   // kg
+  bmi         Float?
+  dateOfBirth DateTime?
+  phone       String?
+  address     String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medicalHistory   MedicalHistory?
+  medications      Medication[]
+  patientSymptoms  PatientSymptom[]
+  lifestyleProfile LifestyleProfile?
+  gutHealthProfile GutHealthProfile?
+  medicalReports   MedicalReport[]
+  aiAnalyses       AIAnalysis[]
+  safetyAlerts     SafetyAlert[]
+
+  @@index([userId])
+}
+
+model AdminProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  department String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// MEDICAL HISTORY
+// ============================================================
+
+model MedicalHistory {
+  id                    String            @id @default(cuid())
+  patientProfileId      String            @unique
+  thyroidCondition      ThyroidCondition  @default(NONE)
+  thyroidConditionOther String?
+  previousThyroidSurgery Boolean          @default(false)
+  surgeryDetails        String?           @db.Text
+  familyHistory         Boolean           @default(false)
+  familyHistoryDetails  String?           @db.Text
+  otherConditions       String?           @db.Text
+  notes                 String?           @db.Text
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+}
+
+model Medication {
+  id               String   @id @default(cuid())
+  patientProfileId String
+  name             String
+  dosage           String?
+  frequency        String?
+  startDate        DateTime?
+  isActive         Boolean  @default(true)
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+
+  @@index([patientProfileId])
+}
+
+// ============================================================
+// SYMPTOMS
+// ============================================================
+
+model PatientSymptom {
+  id               String    @id @default(cuid())
+  patientProfileId String
+  symptomName      String
+  severity         Severity  @default(NONE)
+  frequency        Frequency @default(NEVER)
+  notes            String?
+  reportedAt       DateTime  @default(now())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+
+  @@index([patientProfileId])
+  @@index([symptomName])
+}
+
+// ============================================================
+// LIFESTYLE
+// ============================================================
+
+model LifestyleProfile {
+  id               String        @id @default(cuid())
+  patientProfileId String        @unique
+  dietType         DietType      @default(MIXED)
+  fiberIntake      Frequency     @default(SOMETIMES)
+  fermentedFoodIntake Frequency  @default(RARELY)
+  probioticSupplement Boolean    @default(false)
+  activityLevel    ActivityLevel @default(SEDENTARY)
+  exerciseType     String?
+  exerciseFrequency String?
+  sleepHours       Float?
+  sleepQuality     SleepQuality  @default(FAIR)
+  stressLevel      StressLevel   @default(MODERATE)
+  waterIntake      Float?        // liters per day
+  smokingStatus    String?
+  alcoholUse       String?
+  notes            String?       @db.Text
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// GUT HEALTH
+// ============================================================
+
+model GutHealthProfile {
+  id               String    @id @default(cuid())
+  patientProfileId String    @unique
+  bloating         Severity  @default(NONE)
+  constipation     Severity  @default(NONE)
+  diarrhea         Severity  @default(NONE)
+  abdominalDiscomfort Severity @default(NONE)
+  recentAntibiotics Boolean  @default(false)
+  antibioticDetails String?
+  probioticUse     Boolean   @default(false)
+  probioticDetails String?
+  previousGIDisorder Boolean @default(false)
+  giDisorderDetails String?  @db.Text
+  stoolSampleAvailable Boolean @default(false)
+  microbiomeData   String?   @db.Text // JSON for future microbiome data
+  notes            String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// MEDICAL REPORTS & LAB RESULTS
+// ============================================================
+
+model MedicalReport {
+  id               String           @id @default(cuid())
+  patientProfileId String
+  fileName         String
+  fileUrl          String
+  fileType         String           // pdf, jpg, jpeg, png
+  fileSize         Int              // bytes
+  uploadStatus     UploadStatus     @default(PENDING)
+  extractionStatus ExtractionStatus @default(PENDING)
+  analysisStatus   AnalysisStatus   @default(PENDING)
+  extractedText    String?          @db.Text
+  uploadedAt       DateTime         @default(now())
+  verifiedAt       DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+  labResults     LabResult[]
+  aiAnalysis     AIAnalysis?
+
+  @@index([patientProfileId])
+  @@index([analysisStatus])
+  @@index([createdAt])
+}
+
+model LabResult {
+  id              String            @id @default(cuid())
+  reportId        String
+  testName        String            // TSH, T3, T4, FT3, FT4, etc.
+  testAlias       String?           // normalized name
+  value           Float?
+  valueText       String?           // raw text value
+  unit            String?
+  referenceLow    Float?
+  referenceHigh   Float?
+  referenceText   String?           // raw reference text e.g. "0.33-6.30"
+  classification  LabClassification @default(UNKNOWN)
+  extractedByAI   Boolean           @default(false)
+  patientVerified Boolean           @default(false)
+  criticalFlag    Boolean           @default(false)
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  report MedicalReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([reportId])
+  @@index([testName])
+  @@index([classification])
+}
+
+// ============================================================
+// AI ANALYSIS
+// ============================================================
+
+model AIAnalysis {
+  id                    String         @id @default(cuid())
+  patientProfileId      String
+  reportId              String         @unique
+  modelName             String         @default("grok-3")
+  promptVersion         String         @default("1.0")
+  analysisJson          Json?          // full AI response
+  overallStatus         OverallStatus  @default(NO_MAJOR_CONCERN)
+  summary               String?        @db.Text
+  thyroidPattern        String?
+  doctorReviewRequired  Boolean        @default(false)
+  reviewPriority        ReviewPriority @default(ROUTINE)
+  reviewReason          String?        @db.Text
+  safetyEngineStatus    String?
+  confidence            String?
+  analysisStatus        AnalysisStatus @default(PENDING)
+  errorMessage          String?        @db.Text
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  patientProfile   PatientProfile    @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+  report           MedicalReport     @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  recommendations  AIRecommendation[]
+
+  @@index([patientProfileId])
+  @@index([reportId])
+  @@index([overallStatus])
+  @@index([doctorReviewRequired])
+  @@index([createdAt])
+}
+
+model AIRecommendation {
+  id           String   @id @default(cuid())
+  analysisId   String
+  category     String   // diet, activity, daily_habits, gut_thyroid, things_to_do, things_to_avoid
+  title        String
+  description  String   @db.Text
+  priority     Int      @default(0)
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  analysis AIAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  @@index([analysisId])
+  @@index([category])
+}
+
+// ============================================================
+// SAFETY & REVIEW
+// ============================================================
+
+model SafetyAlert {
+  id               String      @id @default(cuid())
+  patientProfileId String
+  reportId         String?
+  alertType        AlertType
+  alertStatus      AlertStatus @default(NEW)
+  reason           String      @db.Text
+  details          Json?
+  reviewedBy       String?
+  reviewedAt       DateTime?
+  resolvedAt       DateTime?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  patientProfile PatientProfile @relation(fields: [patientProfileId], references: [id], onDelete: Cascade)
+
+  @@index([patientProfileId])
+  @@index([alertStatus])
+  @@index([alertType])
+  @@index([createdAt])
+}
+
+// ============================================================
+// AUDIT LOG
+// ============================================================
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String
+  action      String   // login, logout, report_upload, report_analysis, admin_access, etc.
+  entityType  String?  // report, patient, analysis, etc.
+  entityId    String?
+  details     String?  @db.Text
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
