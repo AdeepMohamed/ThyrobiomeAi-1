@@ -10,7 +10,7 @@ import {
   symptomsFormSchema,
   medicationSchema,
 } from '@/lib/validation/schemas'
-import { calculateBMI } from '@/lib/utils'
+import { calculateBMI, sleep } from '@/lib/utils'
 import { revalidatePath } from 'next/cache'
 
 async function getAuthenticatedPatientProfile() {
@@ -268,7 +268,7 @@ export async function getPatientFullData() {
     return null
   }
 
-  return await prisma.patientProfile.findUnique({
+  const queryPayload = {
     where: { userId: session.user.id },
     include: {
       user: {
@@ -277,15 +277,15 @@ export async function getPatientFullData() {
       medicalHistory: true,
       medications: {
         where: { isActive: true },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: 'desc' as const },
       },
       patientSymptoms: {
-        orderBy: { severity: 'desc' },
+        orderBy: { severity: 'desc' as const },
       },
       lifestyleProfile: true,
       gutHealthProfile: true,
       medicalReports: {
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: 'desc' as const },
         take: 5,
         include: {
           labResults: true,
@@ -293,8 +293,8 @@ export async function getPatientFullData() {
         },
       },
       aiAnalyses: {
-        orderBy: { createdAt: 'desc' },
-        take: 1,
+        orderBy: { createdAt: 'desc' as const },
+        take: 3,
         include: {
           recommendations: true,
           report: {
@@ -303,5 +303,17 @@ export async function getPatientFullData() {
         },
       },
     },
-  })
+  }
+
+  try {
+    return await prisma.patientProfile.findUnique(queryPayload)
+  } catch (err) {
+    console.warn('[getPatientFullData] Query error, retrying...', err)
+    try {
+      await sleep(1000)
+      return await prisma.patientProfile.findUnique(queryPayload)
+    } catch {
+      return null
+    }
+  }
 }
