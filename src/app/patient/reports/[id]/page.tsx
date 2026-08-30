@@ -307,29 +307,83 @@ export default async function FullReportViewPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* SECTION 7: Personalized Diet Guidance */}
+        {/* SECTION 7: Personalized Diet Guidance Engineered from Lab Report */}
         <section className="space-y-4">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-2">
-            <Apple className="h-4 w-4 text-teal-600" />
-            7. Personalized Dietary Guidance & Micronutrient Considerations
-          </h2>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-200/80 pb-2 dark:border-slate-800">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-2">
+              <Apple className="h-4 w-4 text-teal-600" />
+              7. Report-Driven Personalized Dietary & Micronutrient Strategy
+            </h2>
+            <span className="text-[11px] font-semibold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/60 px-2.5 py-0.5 rounded-full border border-teal-200 dark:border-teal-900/60">
+              Formulated from Verified Biomarkers
+            </span>
+          </div>
+
+          {/* Biomarker Context Callout */}
+          <div className="rounded-2xl border border-teal-200/70 bg-gradient-to-r from-teal-50/80 via-emerald-50/40 to-white p-4 dark:border-teal-900/60 dark:from-teal-950/40 dark:to-slate-900 space-y-2">
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className="font-bold text-teal-950 dark:text-teal-100">Active Lab Biomarker Drivers:</span>
+              {report.labResults.map((l) => (
+                <Badge key={l.id} variant="outline" className="bg-white/80 dark:bg-slate-900 border-teal-300 text-teal-800 dark:text-teal-300 text-[10px]">
+                  {l.testName}: {l.value ?? l.valueText} {l.unit} ({l.classification})
+                </Badge>
+              ))}
+            </div>
+            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+              This nutritional blueprint is specifically tailored to your laboratory findings—prioritizing 5'-deiodinase enzyme cofactors (Selenium, Zinc) to support peripheral T4-to-T3 hormone conversion, gentle prebiotic soluble fibers for gut motility along the gut-thyroid axis, and tyrosine-rich proteins.
+            </p>
+          </div>
+
+          {/* Protein & Fiber Target Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 space-y-1.5 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400 flex items-center gap-1">
+                <Activity className="h-3.5 w-3.5" />
+                Personalized Protein Intake Target
+              </span>
+              <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">
+                {rawJson.diet?.protein_guidance || `${Math.round((patient.weight || 68) * 1.1)}g Clean Protein / Day (~1.1g/kg)`}
+              </p>
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                Provides essential L-Tyrosine to fuel thyroglobulin amino acid chains while supporting muscle preservation and satiety.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 space-y-1.5 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400 flex items-center gap-1">
+                <HeartPulse className="h-3.5 w-3.5" />
+                Prebiotic Fiber & Motility Protocol
+              </span>
+              <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">
+                {rawJson.diet?.fiber_guidance || '25–30g Daily Soluble Fiber (Gradual Stepwise Titration)'}
+              </p>
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                Nurtures short-chain fatty acid (butyrate) synthesis to reinforce gut barrier integrity and alleviate sluggish bowel motility.
+              </p>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Foods to Include */}
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4 space-y-3 dark:border-emerald-950 dark:bg-emerald-950/20">
               <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                Foods to Actively Include
+                Foods to Actively Include (Biomarker Targeted)
               </h4>
               <div className="space-y-2.5 text-xs">
                 {(rawJson.diet?.foods_to_include || [
-                  { food_group: 'Selenium & Zinc Rich Foods', examples: ['1-2 Brazil nuts daily', 'Pumpkin seeds', 'Wild salmon'], rationale: 'Supports 5\'-deiodinase enzyme activity converting T4 to active T3.' },
-                  { food_group: 'Prebiotic Fiber Sources', examples: ['Cooked oats', 'Chia pudding', 'Stewed apples'], rationale: 'Feeds butyrate-producing commensal bacteria along the gut-thyroid axis.' },
+                  { food_group: 'Selenium & Zinc Rich Foods (5\'-Deiodinase Cofactors)', examples: ['1–2 Brazil nuts daily', 'Wild Alaskan salmon', 'Pumpkin seeds', 'Sunflower seeds'], rationale: 'Supports 5\'-deiodinase enzyme activity converting inactive T4 to active metabolic T3.' },
+                  { food_group: 'Gentle Prebiotic Soluble Fibers (Gut-Thyroid Axis)', examples: ['Warm steel-cut oats', 'Cooked chia pudding', 'Stewed cinnamon apples (pectin)', 'Cooked squashes'], rationale: 'Feeds butyrate-producing commensal bacteria to support intestinal tight junctions and natural bowel peristalsis.' },
+                  { food_group: 'Clean Tyrosine-Dense Proteins', examples: ['Pasture-raised poultry', 'Lentils', 'Organic eggs', 'Tempeh / Hemp hearts'], rationale: 'Provides L-Tyrosine, the core amino acid precursor required to synthesize thyroid hormone.' },
                 ]).map((item: any, idx: number) => (
-                  <div key={idx} className="bg-white/80 p-2.5 rounded-xl border border-emerald-100 dark:bg-slate-900/60 dark:border-emerald-900/40">
+                  <div key={idx} className="bg-white/90 p-3 rounded-xl border border-emerald-100 dark:bg-slate-900/80 dark:border-emerald-900/40 space-y-1">
                     <p className="font-bold text-slate-900 dark:text-slate-100">{item.food_group}</p>
-                    <p className="text-slate-600 dark:text-slate-300 mt-0.5">Examples: {Array.isArray(item.examples) ? item.examples.join(', ') : item.examples}</p>
-                    <p className="text-[11px] text-emerald-700 dark:text-emerald-400 mt-1 italic">{item.rationale}</p>
+                    <p className="text-slate-600 dark:text-slate-300">
+                      <span className="font-semibold text-slate-700 dark:text-slate-200">Examples:</span> {Array.isArray(item.examples) ? item.examples.join(', ') : item.examples}
+                    </p>
+                    <p className="text-[11px] text-emerald-700 dark:text-emerald-400 italic pt-0.5">
+                      ↳ <span className="font-medium">Mechanism:</span> {item.rationale}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -339,19 +393,54 @@ export default async function FullReportViewPage({ params }: PageProps) {
             <div className="rounded-2xl border border-amber-200 bg-amber-50/40 p-4 space-y-3 dark:border-amber-950 dark:bg-amber-950/20">
               <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
                 <XCircle className="h-4 w-4 text-amber-600" />
-                Foods & Patterns to Limit
+                Foods & Patterns to Limit (Mechanism Based)
               </h4>
               <div className="space-y-2.5 text-xs">
                 {(rawJson.diet?.foods_to_limit || [
-                  { food_group: 'Raw Concentrated Goitrogens', examples: ['Large raw kale shakes', 'Raw cabbage salads in excessive bulk'], rationale: 'Raw goitrogens can compete with iodine uptake; light steaming neutralizes compounds.' },
-                  { food_group: 'Ultra-Processed Foods & Refined Sugars', examples: ['Sugary pastries', 'Deep fried commercial foods'], rationale: 'Increases systemic oxidative burden and mucosal intestinal permeability.' },
+                  { food_group: 'Raw Concentrated Brassica Goitrogens (In Bulk Raw Form)', examples: ['Large raw kale shakes', 'Raw cabbage / broccoli salads in excessive amounts'], rationale: 'Raw goitrogens can compete with iodine uptake; light steaming, boiling, or sautéing naturally deactivates goitrogenic compounds.' },
+                  { food_group: 'High-Dose Kelp & Unmonitored Iodine Supplements', examples: ['Kelp powder pills', 'Bladderwrack capsules', 'Iodine drops'], rationale: 'Sudden large iodine surges can paradoxically suppress thyroid output (Wolff-Chaikoff effect) or trigger autoimmune thyroid flares.' },
+                  { food_group: 'Ultra-Processed Foods & Refined Sugars', examples: ['Commercial pastries', 'High-fructose corn syrup beverages', 'Trans-fat snacks'], rationale: 'Increases systemic oxidative burden, promotes blood glucose volatility, and degrades mucosal intestinal permeability.' },
                 ]).map((item: any, idx: number) => (
-                  <div key={idx} className="bg-white/80 p-2.5 rounded-xl border border-amber-100 dark:bg-slate-900/60 dark:border-amber-900/40">
+                  <div key={idx} className="bg-white/90 p-3 rounded-xl border border-amber-100 dark:bg-slate-900/80 dark:border-amber-900/40 space-y-1">
                     <p className="font-bold text-slate-900 dark:text-slate-100">{item.food_group}</p>
-                    <p className="text-slate-600 dark:text-slate-300 mt-0.5">Examples: {Array.isArray(item.examples) ? item.examples.join(', ') : item.examples}</p>
-                    <p className="text-[11px] text-amber-700 dark:text-amber-400 mt-1 italic">{item.rationale}</p>
+                    <p className="text-slate-600 dark:text-slate-300">
+                      <span className="font-semibold text-slate-700 dark:text-slate-200">Examples:</span> {Array.isArray(item.examples) ? item.examples.join(', ') : item.examples}
+                    </p>
+                    <p className="text-[11px] text-amber-700 dark:text-amber-400 italic pt-0.5">
+                      ↳ <span className="font-medium">Precaution:</span> {item.rationale}
+                    </p>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Sample Daily Meal & Snack Blueprint */}
+          <div className="rounded-2xl border border-indigo-100 bg-indigo-50/30 p-4 dark:border-indigo-950 dark:bg-indigo-950/20 space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-900 dark:text-indigo-300 flex items-center gap-1.5">
+              <Sparkles className="h-4 w-4 text-indigo-600" />
+              Sample Daily Thyroid & Gut-Friendly Meal Blueprint
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+              <div className="bg-white p-3 rounded-xl border border-indigo-100 dark:bg-slate-900 dark:border-indigo-900/40 space-y-1">
+                <span className="font-bold text-indigo-700 dark:text-indigo-400 text-[10px] uppercase">Breakfast</span>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Warm Spiced Oats & Seeds</p>
+                <p className="text-[11px] text-slate-500">Cooked oats with 1 tbsp ground chia, blueberries, cinnamon, and 1 chopped Brazil nut.</p>
+              </div>
+              <div className="bg-white p-3 rounded-xl border border-indigo-100 dark:bg-slate-900 dark:border-indigo-900/40 space-y-1">
+                <span className="font-bold text-indigo-700 dark:text-indigo-400 text-[10px] uppercase">Lunch</span>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Salmon & Quinoa Bowl</p>
+                <p className="text-[11px] text-slate-500">Grilled salmon, warm quinoa, steamed zucchini, pumpkin seeds, and olive oil drizzle.</p>
+              </div>
+              <div className="bg-white p-3 rounded-xl border border-indigo-100 dark:bg-slate-900 dark:border-indigo-900/40 space-y-1">
+                <span className="font-bold text-indigo-700 dark:text-indigo-400 text-[10px] uppercase">Dinner</span>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Herb Chicken & Sweet Potato</p>
+                <p className="text-[11px] text-slate-500">Roasted poultry, baked sweet potato, lightly steamed carrots, and warm bone broth.</p>
+              </div>
+              <div className="bg-white p-3 rounded-xl border border-indigo-100 dark:bg-slate-900 dark:border-indigo-900/40 space-y-1">
+                <span className="font-bold text-indigo-700 dark:text-indigo-400 text-[10px] uppercase">Snack / Tea</span>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Ginger Tea & Walnuts</p>
+                <p className="text-[11px] text-slate-500">Fresh steeped ginger tea with lemon and a small handful of raw walnuts.</p>
               </div>
             </div>
           </div>
@@ -359,14 +448,14 @@ export default async function FullReportViewPage({ params }: PageProps) {
           {/* Nutritional Considerations: Selenium, Zinc, Iodine, etc. */}
           <div className="rounded-2xl border border-slate-200 p-4 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-800/40 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-              Key Micronutrient Focus (Food-First Approach):
+              Essential Micronutrient Cofactors (Food-First Approach):
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               {(rawJson.diet?.nutritional_considerations || [
-                { nutrient: 'Selenium', importance: 'Enzyme conversion cofactor', dietary_sources: ['Brazil nuts', 'Sardines'], caution_note: 'Food sources are safest.' },
-                { nutrient: 'Zinc', importance: 'Receptor binding & TSH signaling', dietary_sources: ['Pumpkin seeds', 'Lentils'], caution_note: 'Avoid high dose pills.' },
-                { nutrient: 'Iodine', importance: 'Thyroid hormone backbone', dietary_sources: ['Iodized salt (moderate)', 'Fish'], caution_note: 'Do not take kelp supplements.' },
-                { nutrient: 'Vitamin D3 & Iron', importance: 'Immune & enzymatic function', dietary_sources: ['Egg yolks', 'Lentils', 'Sunlight'], caution_note: 'Request doctor blood check.' },
+                { nutrient: 'Selenium (Food-First)', importance: 'Cofactor for 5\'-deiodinases converting T4 to T3 and protecting thyroid tissue.', dietary_sources: ['1-2 Brazil nuts daily', 'Wild salmon', 'Sardines'], caution_note: 'Food sources provide the safest, bioavailable delivery.' },
+                { nutrient: 'Zinc', importance: 'Required for TSH synthesis and cellular thyroid receptor binding.', dietary_sources: ['Pumpkin seeds', 'Lentils', 'Pasture poultry'], caution_note: 'Food sources are gentle; avoid excess supplemental pills.' },
+                { nutrient: 'Iodine (Balanced)', importance: 'Core structural element of thyroxine (T4) and triiodothyronine (T3).', dietary_sources: ['Iodized salt in culinary moderation', 'Marine white fish'], caution_note: 'Avoid kelp or seaweed supplement pills without physician testing.' },
+                { nutrient: 'Vitamin D3 & Iron / Ferritin', importance: 'Immune system modulation and enzymatic cofactor for thyroid peroxidase.', dietary_sources: ['Egg yolks', 'Lentils with citrus', 'Safe morning sun'], caution_note: 'Request serum 25-OH Vitamin D and Ferritin checks from your doctor.' },
               ]).map((nut: any, idx: number) => (
                 <div key={idx} className="bg-white p-3 rounded-xl border border-slate-200 dark:bg-slate-900 dark:border-slate-700 space-y-1">
                   <p className="font-bold text-teal-800 dark:text-teal-300">{nut.nutrient}</p>

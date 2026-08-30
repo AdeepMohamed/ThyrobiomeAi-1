@@ -4,14 +4,21 @@ import { auth } from '@/auth'
 
 export default auth((req) => {
   const { nextUrl } = req
+  const pathname = nextUrl.pathname
+
+  // Always allow NextAuth internal API routes
+  if (pathname.startsWith('/api/auth')) {
+    return NextResponse.next()
+  }
+
   const isLoggedIn = !!req.auth
   const userRole = req.auth?.user?.role
 
-  const isAuthRoute = nextUrl.pathname === '/login' || nextUrl.pathname === '/register'
-  const isPatientRoute = nextUrl.pathname.startsWith('/patient')
-  const isAdminRoute = nextUrl.pathname.startsWith('/admin')
-  const isApiAdminRoute = nextUrl.pathname.startsWith('/api/admin')
-  const isApiPatientRoute = nextUrl.pathname.startsWith('/api/patient') || nextUrl.pathname.startsWith('/api/reports')
+  const isAuthRoute = pathname === '/login' || pathname === '/register'
+  const isPatientRoute = pathname.startsWith('/patient')
+  const isAdminRoute = pathname.startsWith('/admin')
+  const isApiAdminRoute = pathname.startsWith('/api/admin')
+  const isApiPatientRoute = pathname.startsWith('/api/patient') || pathname.startsWith('/api/reports')
 
   // If already logged in and visiting login or register, redirect to appropriate dashboard
   if (isAuthRoute && isLoggedIn) {

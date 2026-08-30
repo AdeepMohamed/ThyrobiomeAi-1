@@ -113,6 +113,9 @@ export async function analyzeThyroidReportWithGrok(
 function generateComprehensiveMockAnalysis(input: GrokAnalysisPromptInput): GrokAnalysisResponse {
   const tsh = input.labResults.find(r => r.testName.toUpperCase() === 'TSH')
   const ft4 = input.labResults.find(r => r.testName.toUpperCase() === 'FT4' || r.testName.toUpperCase() === 'FREE T4')
+  const ft3 = input.labResults.find(r => r.testName.toUpperCase() === 'FT3' || r.testName.toUpperCase() === 'FREE T3')
+  const antiTpo = input.labResults.find(r => r.testName.toUpperCase().includes('TPO') || r.testName.toUpperCase().includes('PEROXIDASE'))
+
   const isElevatedTSH = tsh?.value ? tsh.value > (tsh.referenceHigh || 4.5) : false
   const isSuppressedTSH = tsh?.value ? tsh.value < (tsh.referenceLow || 0.4) : false
 
@@ -121,74 +124,90 @@ function generateComprehensiveMockAnalysis(input: GrokAnalysisPromptInput): Grok
 
   let patternText = 'Laboratory values within typical reported reference ranges.'
   if (isElevatedTSH) {
-    patternText = 'Laboratory pattern potentially consistent with elevated thyrotropin (TSH) indicators, commonly observed in reduced thyroid metabolic output or early compensation.'
+    patternText = `Laboratory pattern potentially consistent with elevated TSH (${tsh?.value ?? ''} ${tsh?.unit ?? 'µIU/mL'}), suggestive of increased pituitary drive and subclinical/mild thyroid compensation.`
   } else if (isSuppressedTSH) {
-    patternText = 'Laboratory pattern potentially consistent with suppressed thyrotropin (TSH) indicators, commonly observed in heightened thyroid hormone activity.'
+    patternText = `Laboratory pattern potentially consistent with suppressed TSH (${tsh?.value ?? ''} ${tsh?.unit ?? 'µIU/mL'}), commonly observed with elevated circulating thyroid hormone activity.`
   }
 
   const symptomsList = input.symptoms.map(s => s.symptomName).join(', ')
+  const weightKg = input.patientProfile.weight || 68
+  const targetProteinGrams = Math.round(weightKg * 1.1)
 
   return {
     overall_status: status,
     confidence: input.labResults.length >= 2 ? 'high' : 'moderate',
-    summary: `Comprehensive evaluation of your recent thyroid laboratory metrics, reported health history, and gastrointestinal symptoms reveals a ${patternText.toLowerCase()} Key focus areas identified include optimizing cellular thyroid hormone conversion, supporting gut barrier integrity through dietary fiber titration, and balancing daily energy expenditure with restorative rest.`,
+    summary: `Comprehensive evaluation of your reported lab metrics (TSH: ${tsh?.value ?? 'evaluated'} ${tsh?.unit ?? ''}, FT4: ${ft4?.value ?? 'evaluated'} ${ft4?.unit ?? ''}), clinical symptoms (${symptomsList || 'fatigue / energy variations'}), and digestive health indicates a ${patternText.toLowerCase()} The dietary strategy below is specifically engineered around your biomarker profile: targeting 5'-deiodinase enzymatic conversion of T4 to active T3, nurturing the gut mucosal barrier, and optimizing cellular trace mineral balance.`,
     thyroid_pattern: patternText,
     lab_interpretation: input.labResults.map(l => ({
       test_name: l.testName,
       patient_value: `${l.value ?? l.valueText ?? 'N/A'} ${l.unit ?? ''}`,
       reference_range: l.referenceText || `${l.referenceLow ?? '?'} – ${l.referenceHigh ?? '?'} ${l.unit ?? ''}`,
-      clinical_significance: `Reflects pituitary-thyroid axis regulation. Status is noted as ${l.classification || 'documented'}.`,
+      clinical_significance: l.classification === 'HIGH'
+        ? `Elevated relative to report reference range (${l.referenceText || 'standard'}). In pituitary-thyroid feedback, elevated TSH signals the body calling for greater hormone output.`
+        : l.classification === 'LOW'
+        ? `Below reference range (${l.referenceText || 'standard'}). Signals decreased pituitary demand or elevated peripheral hormone levels.`
+        : `Within documented reference range (${l.referenceText || 'standard'}). Reflects stable baseline parameters.`,
       status: l.classification || 'Assessed',
     })),
     key_observations: [
-      `Thyroid hormone pattern correlates with reported symptoms (${symptomsList || 'fatigue/energy fluctuations'}).`,
+      `TSH elevation (${tsh?.value ?? 'N/A'} ${tsh?.unit ?? ''}) indicates pituitary compensation, correlating directly with reported fatigue and metabolic sluggishness.`,
       input.gutHealth?.bloating && input.gutHealth.bloating !== 'NONE'
-        ? 'Gastrointestinal sluggishness or bloating may mirror altered thyroid signaling along the gut-thyroid axis.'
-        : 'Digestive markers remain stable, supporting consistent nutrient absorption.',
-      'Dietary intake indicates opportunities to incorporate targeted trace minerals (selenium, zinc) via whole foods.',
+        ? 'Reported gastrointestinal bloating and sluggish transit mirror thyroid hormone down-regulation along the enteric nervous system.'
+        : 'Digestive markers remain stable, providing a favorable mucosal baseline for micronutrient absorption.',
+      `Targeted whole-food cofactors (Selenium, Zinc, Tyrosine) are prioritized to assist hepatic and peripheral T4-to-T3 deiodinase conversion.`,
     ],
     doctor_review: {
       required: input.safetyFlags.deterministicStatus !== 'NO_MAJOR_CONCERN',
       priority: priority,
-      reason: input.safetyFlags.concerningCombinations.join('. ') || 'Routine clinical correlation recommended for thyroid panel optimization.',
+      reason: input.safetyFlags.concerningCombinations.join('. ') || `Elevated TSH (${tsh?.value ?? ''} ${tsh?.unit ?? ''}) warrants physician correlation and periodic laboratory monitoring.`,
     },
     diet: {
       foods_to_include: [
         {
-          food_group: 'Prebiotic & Soluble Fiber Sources',
-          examples: ['Steel-cut oats', 'Ground chia seeds', 'Cooked carrots', 'Stewed pears'],
-          rationale: 'Supplies soluble prebiotic fuel for commensal gut bacteria producing short-chain fatty acids (SCFAs), crucial for gut barrier health and systemic metabolic stability.',
+          food_group: 'Selenium & Zinc Rich Whole Foods (Deiodinase Conversion)',
+          examples: ['1–2 Brazil nuts daily (provides ~100-150mcg food selenium)', 'Wild Alaskan salmon', 'Pumpkin seeds', 'Sunflower seeds'],
+          rationale: `Because your TSH is at ${tsh?.value ?? 'elevated levels'} and the body is working to sustain active T3 conversion, selenium and zinc serve as indispensable mineral cofactors for 5'-deiodinase enzymes.`,
         },
         {
-          food_group: 'Clean Bioavailable Protein',
-          examples: ['Wild Alaskan salmon', 'Lentils', 'Organic pasture-raised eggs', 'Pumpkin seed protein'],
-          rationale: 'Provides essential amino acids including tyrosine, a core biochemical precursor for thyroid hormone synthesis.',
+          food_group: 'Gentle Soluble Prebiotic Fibers (Gut Motility & SCFA Support)',
+          examples: ['Warm steel-cut oats', 'Stewed cinnamon apples (rich in pectin)', 'Ground chia pudding', 'Cooked carrots and squashes'],
+          rationale: 'Nurtures butyrate-producing commensal gut microbes along the gut-thyroid axis, counteracting sluggish bowel motility and bloating without irritating sensitive digestive lining.',
         },
         {
-          food_group: 'Antioxidant & Polyphenol Rich Foods',
-          examples: ['Wild blueberries', 'Steamed dark leafy greens', 'Turmeric with black pepper', 'Green tea (decaf if sensitive)'],
-          rationale: 'Helps modulate cellular oxidative stress and support tissue deiodinase enzyme efficiency.',
+          food_group: 'Tyrosine & Amino Acid Dense Clean Proteins',
+          examples: ['Pasture-raised poultry', 'Lentils', 'Tempeh / Hemp hearts', 'Organic eggs'],
+          rationale: 'L-Tyrosine is the core amino acid backbone that binds with iodine inside thyroid follicular cells to synthesize thyroglobulin.',
+        },
+        {
+          food_group: 'Anti-Inflammatory Polyphenols & Mucosal Tonics',
+          examples: ['Wild blueberries', 'Steamed spinach with lemon', 'Turmeric and ginger tea', 'Bone broth / vegetable mineral broth'],
+          rationale: 'Modulates systemic oxidative stress and helps fortify the intestinal tight junctions against endotoxemia (LPS leakage).',
         },
       ],
       foods_to_limit: [
         {
-          food_group: 'Ultra-Processed Foods & Refined Sugars',
-          examples: ['Commercial baked goods', 'Sweetened beverages', 'Trans-fat containing fried items'],
-          rationale: 'Can impair glycemic regulation and foster low-grade gastrointestinal mucosal irritation.',
+          food_group: 'Raw Concentrated Cruciferous Goitrogens (In Large Uncooked Volumes)',
+          examples: ['Raw kale protein smoothies', 'Raw bulk cabbage / broccoli salads'],
+          rationale: 'Uncooked goitrogens can competitively inhibit the sodium-iodide symporter (NIS); light steaming or sautéing naturally deactivates these compounds while retaining all beneficial micronutrients.',
         },
         {
-          food_group: 'Excessive Raw Cruciferous Vegetables in Single Servings',
-          examples: ['Large raw kale shakes', 'Raw cabbage salads'],
-          rationale: 'High quantities of raw goitrogens may compete with iodine uptake; light steaming or cooking deactivates goitrogenic compounds.',
+          food_group: 'Refined Sugars & Ultra-Processed Commercial Trans-Fats',
+          examples: ['Packaged bakery goods', 'High-fructose corn syrups', 'Deep-fried commercial snacks'],
+          rationale: 'Triggers rapid blood glucose swings and systemic inflammatory signaling that can blunt peripheral cellular thyroid receptor sensitivity.',
+        },
+        {
+          food_group: 'High-Dose Kelp & Unmonitored Iodine Supplements',
+          examples: ['Kelp powders', 'Bladderwrack capsules', 'Megadose iodine drops'],
+          rationale: 'Sudden high iodine surges can paradoxically induce the Wolff-Chaikoff effect or trigger autoimmune thyroid antibody elevation. Food-based culinary iodine is safest.',
         },
       ],
-      protein_guidance: 'Aim for approximately 1.0 to 1.2 grams of dietary protein per kilogram of body weight spread evenly across meals to sustain satiety and metabolic rate.',
-      fiber_guidance: 'Gradually increase daily fiber by 3-5 grams weekly toward a target of 25-30 grams daily, drinking ample fluids to prevent transient bloating.',
+      protein_guidance: `Target approximately ${targetProteinGrams} grams of clean dietary protein daily (~1.1g per kg body weight based on your current weight), distributed across 3 balanced meals (20-25g per meal) to stabilize satiety and metabolic conversion.`,
+      fiber_guidance: 'Gradually increase soluble fiber by 3–5 grams every few days toward a target of 25–30 grams daily. Focus on well-cooked, warm prebiotic options and maintain 2.0–2.5L hydration to prevent transient bloating.',
       nutritional_considerations: [
         {
-          nutrient: 'Selenium',
-          importance: 'Essential cofactor for selenoproteins and iodothyronine deiodinases that activate T4 into active T3.',
-          dietary_sources: ['Brazil nuts (1 to 2 nuts daily provide optimal daily selenium)', 'Sardines', 'Shiitake mushrooms', 'Eggs'],
+          nutrient: 'Selenium (Food-First)',
+          importance: 'Essential structural component of glutathione peroxidase and deiodinase enzymes protecting the thyroid from oxidative damage during hormone synthesis.',
+          dietary_sources: ['Brazil nuts (1–2 nuts/day)', 'Sardines', 'Wild cod', 'Pasture-raised eggs'],
           caution_note: 'Obtain from dietary food sources; avoid high-dose supplements unless advised following clinical blood testing.',
         },
         {
@@ -198,16 +217,16 @@ function generateComprehensiveMockAnalysis(input: GrokAnalysisPromptInput): Grok
           caution_note: 'Gentle whole food sources are optimal. Excessive elemental zinc can compete with copper absorption.',
         },
         {
-          nutrient: 'Iodine',
-          importance: 'Building block of thyroxine (T4) and triiodothyronine (T3).',
-          dietary_sources: ['Iodized salt in culinary moderation', 'Cod', 'Sea vegetables (moderate)', 'Dairy'],
-          caution_note: 'Do not take high-dose kelp or iodine supplements without physician guidance, as excessive iodine can paradoxically trigger thyroid dysfunction.',
+          nutrient: 'Iodine (Balanced Culinary Level)',
+          importance: 'Structural building block required for T3 and T4 synthesis.',
+          dietary_sources: ['Moderate iodized sea salt', 'Marine white fish', 'Pasture eggs'],
+          caution_note: 'Avoid kelp or seaweed supplement pills unless specifically ordered by your endocrinologist.',
         },
         {
-          nutrient: 'Vitamin D3 & Iron',
-          importance: 'Supports immune system modulation and thyroid peroxidase enzymatic action.',
-          dietary_sources: ['Egg yolks', 'Fatty fish', 'Sunlight exposure', 'Lentils', 'Spinach (with vitamin C)'],
-          caution_note: 'Consider requesting serum 25-hydroxy Vitamin D and Ferritin testing from your physician.',
+          nutrient: 'Vitamin D3 & Ferritin (Iron Stores)',
+          importance: 'Crucial cofactors for thyroid peroxidase (TPO) enzyme activity and immune system modulation.',
+          dietary_sources: ['Egg yolks', 'Wild fatty fish', 'Safe morning sun', 'Lentils / spinach with citrus'],
+          caution_note: 'Ask your doctor to check your serum 25-OH Vitamin D and serum Ferritin levels on your next routine blood panel.',
         },
       ],
     },

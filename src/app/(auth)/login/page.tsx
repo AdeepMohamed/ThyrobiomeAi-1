@@ -31,18 +31,14 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        setError('Invalid email or password. Please try again.')
+        setError('Invalid email or password. Please check your credentials.')
         setIsLoading(false)
         return
       }
 
-      // Check role or default to patient/admin
-      if (email.toLowerCase().includes('admin')) {
-        router.push('/admin/dashboard')
-      } else {
-        router.push('/patient/dashboard')
-      }
-      router.refresh()
+      // Full navigation guarantees session cookie transmission to middleware
+      const targetUrl = email.toLowerCase().includes('admin') ? '/admin/dashboard' : '/patient/dashboard'
+      window.location.href = targetUrl
     } catch {
       setError('An unexpected error occurred during sign in. Please try again.')
       setIsLoading(false)

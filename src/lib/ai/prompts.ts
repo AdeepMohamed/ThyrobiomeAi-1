@@ -156,6 +156,14 @@ Out of Range Labs: ${data.safetyFlags.hasOutOfRangeLabs ? 'YES' : 'NO'}
 Severe Symptoms Present: ${data.safetyFlags.hasSevereSymptoms ? 'YES' : 'NO'}
 Identified Concerns: ${data.safetyFlags.concerningCombinations.join('; ') || 'None'}
 
+=== CRITICAL DIRECTIVE FOR PERSONALIZED DIET GENERATION ===
+The dietary guidance in "diet" MUST BE DEEPLY CUSTOMIZED to the patient's specific laboratory biomarkers, BMI, reported symptoms, and gut profile:
+1. Explicitly reference their laboratory findings in the rationales (e.g. "Because your TSH is elevated at [Value]...", "To support conversion of Free T4 to Free T3...", "Because Anti-TPO is elevated...").
+2. Tailor protein, fiber, and micronutrient recommendations (Selenium, Zinc, Tyrosine, Iodine balance, Vitamin D3, Iron) to their exact hormone and digestive profile.
+3. If sluggish gut motility, constipation, or bloating is present, emphasize gentle soluble fibers (cooked oats, stewed apples, PHGG) and warm digestible foods rather than harsh raw bulk.
+4. If autoimmune indicators (Anti-TPO/Anti-TG) are present, emphasize mucosal gut integrity, anti-inflammatory polyphenols, and caution against excess iodine/kelp.
+5. If thyroid medication (Levothyroxine, etc.) is listed, reinforce nutrient separation (separate calcium, iron, soy, coffee by 4 hours).
+
 === REQUIRED JSON OUTPUT STRUCTURE ===
 Return a JSON object conforming strictly to this format:
 {
@@ -185,32 +193,44 @@ Return a JSON object conforming strictly to this format:
   "diet": {
     "foods_to_include": [
       {
-        "food_group": "Fiber & Prebiotic Rich Foods",
-        "examples": ["Cooked oats", "Ground flaxseeds", "Stewed apples", "Berries"],
-        "rationale": "Supports short-chain fatty acid (SCFA) production which nurtures gut barrier integrity and metabolic health."
+        "food_group": "Specific Food Group (e.g., Selenium & Zinc Rich Foods, Soluble Prebiotic Fiber, Anti-Inflammatory Omega-3s)",
+        "examples": ["Specific food items tailored to report"],
+        "rationale": "Direct biochemical rationale explaining how this supports the patient's specific lab metrics (e.g. 5'-deiodinase enzyme activity, mucosal gut barrier, metabolic conversion)."
       }
     ],
     "foods_to_limit": [
       {
-        "food_group": "Ultra-processed & Inflammatory Foods",
-        "examples": ["Refined sugars", "Excessive deep-fried items", "Artificial additives"],
-        "rationale": "May exacerbate systemic inflammatory load and gastrointestinal dysbiosis."
+        "food_group": "Specific Food Group to Limit (e.g., Raw Concentrated Brassica Goitrogens, Ultra-Processed Inflammatory Foods, Excess Iodine Supplements)",
+        "examples": ["Specific food items to moderate"],
+        "rationale": "Direct biochemical rationale explaining the interaction with thyroid hormone synthesis or intestinal permeability."
       }
     ],
-    "protein_guidance": "Personalized protein intake guidance suited to BMI and thyroid hormone conversion demands.",
-    "fiber_guidance": "Stepwise fiber titration advice considering gut bloating or constipation symptoms.",
+    "protein_guidance": "Detailed protein intake target (e.g., 1.0-1.2g/kg based on BMI) and amino acid support (Tyrosine) for hormone synthesis.",
+    "fiber_guidance": "Specific soluble vs insoluble fiber titration strategy suited to their reported gut transit and bloating levels.",
     "nutritional_considerations": [
       {
         "nutrient": "Selenium",
-        "importance": "Essential cofactor for deiodinase enzymes (T4 to T3 conversion).",
-        "dietary_sources": ["Brazil nuts (1-2/day)", "Sardines", "Eggs", "Sunflower seeds"],
-        "caution_note": "Obtain primarily through food; discuss serum testing before high-dose supplementation."
+        "importance": "Essential cofactor for 5'-deiodinase enzymes that convert inactive T4 into active metabolic T3.",
+        "dietary_sources": ["1-2 Brazil nuts daily", "Wild salmon", "Sardines", "Sunflower seeds"],
+        "caution_note": "Obtain primarily through food sources; avoid high-dose standalone pills without serum testing."
       },
       {
         "nutrient": "Zinc",
-        "importance": "Required for TSH synthesis and thyroid hormone receptor signaling.",
-        "dietary_sources": ["Pumpkin seeds", "Lentils", "Chickpeas", "Lean poultry"],
-        "caution_note": "Food sources are gentle; avoid excess supplemental zinc without physician oversight."
+        "importance": "Crucial for thyroid hormone receptor binding and pituitary TSH production.",
+        "dietary_sources": ["Pumpkin seeds", "Lentils", "Chickpeas", "Pasture-raised poultry"],
+        "caution_note": "Gentle food sources are optimal; excess elemental zinc can deplete copper."
+      },
+      {
+        "nutrient": "Iodine (Balanced)",
+        "importance": "Essential structural component of thyroid hormones (T3/T4).",
+        "dietary_sources": ["Moderate iodized salt", "Marine fish", "Eggs"],
+        "caution_note": "Avoid high-dose kelp/seaweed pills which can trigger autoimmune thyroid flares."
+      },
+      {
+        "nutrient": "Vitamin D3 & Iron / Ferritin",
+        "importance": "Cofactors for thyroid peroxidase enzyme function and systemic cellular energy.",
+        "dietary_sources": ["Egg yolks", "Grass-fed beef or lentils with vitamin C", "Safe sunlight exposure"],
+        "caution_note": "Request comprehensive serum 25-OH Vitamin D and Ferritin checks from your physician."
       }
     ]
   },
