@@ -157,12 +157,17 @@ Severe Symptoms Present: ${data.safetyFlags.hasSevereSymptoms ? 'YES' : 'NO'}
 Identified Concerns: ${data.safetyFlags.concerningCombinations.join('; ') || 'None'}
 
 === CRITICAL DIRECTIVE FOR PERSONALIZED DIET GENERATION ===
-The dietary guidance in "diet" MUST BE DEEPLY CUSTOMIZED to the patient's specific laboratory biomarkers, BMI, reported symptoms, and gut profile:
+The dietary guidance in "diet" MUST BE DEEPLY CUSTOMIZED to the patient's specific laboratory biomarkers, BMI, reported symptoms, gut profile, and grounded in authentic, wholesome South Indian cuisine:
 1. Explicitly reference their laboratory findings in the rationales (e.g. "Because your TSH is elevated at [Value]...", "To support conversion of Free T4 to Free T3...", "Because Anti-TPO is elevated...").
 2. Tailor protein, fiber, and micronutrient recommendations (Selenium, Zinc, Tyrosine, Iodine balance, Vitamin D3, Iron) to their exact hormone and digestive profile.
-3. If sluggish gut motility, constipation, or bloating is present, emphasize gentle soluble fibers (cooked oats, stewed apples, PHGG) and warm digestible foods rather than harsh raw bulk.
-4. If autoimmune indicators (Anti-TPO/Anti-TG) are present, emphasize mucosal gut integrity, anti-inflammatory polyphenols, and caution against excess iodine/kelp.
-5. If thyroid medication (Levothyroxine, etc.) is listed, reinforce nutrient separation (separate calcium, iron, soy, coffee by 4 hours).
+3. Feature authentic South Indian culinary examples:
+   - Fermented gut-friendly staples (Ragi Idli, Pesarattu, Red Rice Puttu).
+   - Micronutrient & mineral-dense curries and stews (Drumstick/Murungakkai Sambar, Ash Gourd Kootu, Kerala Kudampuli Fish Curry, Coconut Thoran).
+   - Traditional digestive tonics (Probiotic Spiced Neer Mor / Buttermilk with ginger & curry leaves, Sukku Kaapi / dry ginger infusion, warm Garlic-Jeera Rasam).
+   - Plant proteins & ancient grains (Sprouted Moong Sundal, Black Chickpea Kadala curry, Foxtail/Kodo Millets, Samba Wheat Upma).
+4. If sluggish gut motility, constipation, or bloating is present, emphasize gentle soluble fibers (warm oats/pongal, stewed gourd kootu, buttermilk) and warm digestible spices (ginger, cumin, hing, black pepper).
+5. If autoimmune indicators (Anti-TPO/Anti-TG) are present, emphasize mucosal gut integrity, anti-inflammatory polyphenols, and caution against excess iodine/kelp.
+6. If thyroid medication (Levothyroxine, etc.) is listed, reinforce nutrient separation (separate calcium, iron, coffee, soy, and breakfast by 4 hours).
 
 === REQUIRED JSON OUTPUT STRUCTURE ===
 Return a JSON object conforming strictly to this format:
@@ -193,9 +198,9 @@ Return a JSON object conforming strictly to this format:
   "diet": {
     "foods_to_include": [
       {
-        "food_group": "Specific Food Group (e.g., Selenium & Zinc Rich Foods, Soluble Prebiotic Fiber, Anti-Inflammatory Omega-3s)",
-        "examples": ["Specific food items tailored to report"],
-        "rationale": "Direct biochemical rationale explaining how this supports the patient's specific lab metrics (e.g. 5'-deiodinase enzyme activity, mucosal gut barrier, metabolic conversion)."
+        "food_group": "Specific South Indian Food Group (e.g., Drumstick & Dal Sambars for Minerals, Fermented Ragi Idli & Pesarattu for Prebiotics/Tyrosine, Omega-3 Fish Curries, Probiotic Moru)",
+        "examples": ["Specific traditional South Indian dishes with thyroid-supportive ingredients"],
+        "rationale": "Direct biochemical mechanism connecting this South Indian food to the patient's specific lab biomarkers (TSH, FT4, FT3, etc.)."
       }
     ],
     "foods_to_limit": [

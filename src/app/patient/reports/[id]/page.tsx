@@ -392,13 +392,13 @@ export default async function FullReportViewPage({ params }: PageProps) {
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4 space-y-3 dark:border-emerald-950 dark:bg-emerald-950/20">
               <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                Foods to Actively Include (Biomarker Targeted)
+                Foods to Actively Include (South Indian Biomarker Targeted)
               </h4>
               <div className="space-y-2.5 text-xs">
                 {(rawJson.diet?.foods_to_include || [
-                  { food_group: 'Selenium & Zinc Rich Foods (5\'-Deiodinase Cofactors)', examples: ['1–2 Brazil nuts daily', 'Wild Alaskan salmon', 'Pumpkin seeds', 'Sunflower seeds'], rationale: 'Supports 5\'-deiodinase enzyme activity converting inactive T4 to active metabolic T3.' },
-                  { food_group: 'Gentle Prebiotic Soluble Fibers (Gut-Thyroid Axis)', examples: ['Warm steel-cut oats', 'Cooked chia pudding', 'Stewed cinnamon apples (pectin)', 'Cooked squashes'], rationale: 'Feeds butyrate-producing commensal bacteria to support intestinal tight junctions and natural bowel peristalsis.' },
-                  { food_group: 'Clean Tyrosine-Dense Proteins', examples: ['Pasture-raised poultry', 'Lentils', 'Organic eggs', 'Tempeh / Hemp hearts'], rationale: 'Provides L-Tyrosine, the core amino acid precursor required to synthesize thyroid hormone.' },
+                  { food_group: 'Mineral-Rich Drumstick (Moringa) & Dal Sambars', examples: ['Yellow toor dal & drumstick sambar', 'Ash Gourd (Pooshnikai) Kootu', '1–2 Brazil nuts daily'], rationale: 'Provides essential Selenium, Zinc, and Tyrosine cofactors for 5\'-deiodinase enzymes converting T4 into active metabolic T3.' },
+                  { food_group: 'Fermented Gut Staples & Probiotic Moru', examples: ['Steamed Ragi / Multi-Millet Idlis', 'Green Gram Pesarattu with ginger chutney', 'Spiced Neer Mor (Buttermilk)'], rationale: 'Feeds butyrate-producing commensal bacteria along the gut-thyroid axis and enhances peristaltic motility.' },
+                  { food_group: 'Clean Marine Omega-3s & Digestive Rasams', examples: ['Kerala Matta Rice with Kudampuli Ayala (Mackerel) Curry', 'Garlic-Jeera Rasam', 'Moong Dal Sundal'], rationale: 'Suppresses inflammatory cytokines while black pepper (piperine) and cumin boost digestive gastric acid.' },
                 ]).map((item: any, idx: number) => (
                   <div key={idx} className="bg-white/90 p-3 rounded-xl border border-emerald-100 dark:bg-slate-900/80 dark:border-emerald-900/40 space-y-1">
                     <p className="font-bold text-slate-900 dark:text-slate-100">{item.food_group}</p>
@@ -421,9 +421,9 @@ export default async function FullReportViewPage({ params }: PageProps) {
               </h4>
               <div className="space-y-2.5 text-xs">
                 {(rawJson.diet?.foods_to_limit || [
-                  { food_group: 'Raw Concentrated Brassica Goitrogens (In Bulk Raw Form)', examples: ['Large raw kale shakes', 'Raw cabbage / broccoli salads in excessive amounts'], rationale: 'Raw goitrogens can compete with iodine uptake; light steaming, boiling, or sautéing naturally deactivates goitrogenic compounds.' },
+                  { food_group: 'Raw Bulk Cruciferous Goitrogens (In Uncooked Raw Form)', examples: ['Raw cabbage salads in bulk', 'Raw cauliflower / kale smoothies'], rationale: 'Raw goitrogens can compete with iodine uptake; traditional steaming, boiling in sambars, and tempering deactivates goitrogenic compounds.' },
+                  { food_group: 'Refined Maida & Deep-Fried Commercial Bakery Snacks', examples: ['Commercial maida parottas', 'Packaged deep-fried bakery mixtures', 'High-sugar sweets'], rationale: 'Increases systemic oxidative burden, causes rapid blood glucose spikes, and degrades mucosal intestinal permeability.' },
                   { food_group: 'High-Dose Kelp & Unmonitored Iodine Supplements', examples: ['Kelp powder pills', 'Bladderwrack capsules', 'Iodine drops'], rationale: 'Sudden large iodine surges can paradoxically suppress thyroid output (Wolff-Chaikoff effect) or trigger autoimmune thyroid flares.' },
-                  { food_group: 'Ultra-Processed Foods & Refined Sugars', examples: ['Commercial pastries', 'High-fructose corn syrup beverages', 'Trans-fat snacks'], rationale: 'Increases systemic oxidative burden, promotes blood glucose volatility, and degrades mucosal intestinal permeability.' },
                 ]).map((item: any, idx: number) => (
                   <div key={idx} className="bg-white/90 p-3 rounded-xl border border-amber-100 dark:bg-slate-900/80 dark:border-amber-900/40 space-y-1">
                     <p className="font-bold text-slate-900 dark:text-slate-100">{item.food_group}</p>
@@ -443,28 +443,28 @@ export default async function FullReportViewPage({ params }: PageProps) {
           <div className="rounded-2xl border border-indigo-100 bg-indigo-50/30 p-4 dark:border-indigo-950 dark:bg-indigo-950/20 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-900 dark:text-indigo-300 flex items-center gap-1.5">
               <Sparkles className="h-4 w-4 text-indigo-600" />
-              Sample Daily Thyroid & Gut-Friendly Meal Blueprint
+              Sample Daily South Indian Thyroid & Gut-Friendly Meal Blueprint
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
               <div className="bg-white p-3 rounded-xl border border-indigo-100 dark:bg-slate-900 dark:border-indigo-900/40 space-y-1">
                 <span className="font-bold text-indigo-700 dark:text-indigo-400 text-[10px] uppercase">Breakfast</span>
-                <p className="font-semibold text-slate-900 dark:text-slate-100">Warm Spiced Oats & Seeds</p>
-                <p className="text-[11px] text-slate-500">Cooked oats with 1 tbsp ground chia, blueberries, cinnamon, and 1 chopped Brazil nut.</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Ragi Idli & Drumstick Sambar</p>
+                <p className="text-[11px] text-slate-500">3 steamed ragi idlis with Moringa yellow dal sambar, coconut chutney, and 1 Brazil nut.</p>
               </div>
               <div className="bg-white p-3 rounded-xl border border-indigo-100 dark:bg-slate-900 dark:border-indigo-900/40 space-y-1">
                 <span className="font-bold text-indigo-700 dark:text-indigo-400 text-[10px] uppercase">Lunch</span>
-                <p className="font-semibold text-slate-900 dark:text-slate-100">Salmon & Quinoa Bowl</p>
-                <p className="text-[11px] text-slate-500">Grilled salmon, warm quinoa, steamed zucchini, pumpkin seeds, and olive oil drizzle.</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Matta Rice, Fish/Dal & Moru</p>
+                <p className="text-[11px] text-slate-500">Kerala red rice with Kudampuli fish curry (or Methi Dal), cabbage thoran, and spiced moru.</p>
               </div>
               <div className="bg-white p-3 rounded-xl border border-indigo-100 dark:bg-slate-900 dark:border-indigo-900/40 space-y-1">
                 <span className="font-bold text-indigo-700 dark:text-indigo-400 text-[10px] uppercase">Dinner</span>
-                <p className="font-semibold text-slate-900 dark:text-slate-100">Herb Chicken & Sweet Potato</p>
-                <p className="text-[11px] text-slate-500">Roasted poultry, baked sweet potato, lightly steamed carrots, and warm bone broth.</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Oats Pongal & Gourd Kootu</p>
+                <p className="text-[11px] text-slate-500">Warm oats-moong dal pongal with ridge gourd kootu, 1 tsp ghee, and warm pepper rasam.</p>
               </div>
               <div className="bg-white p-3 rounded-xl border border-indigo-100 dark:bg-slate-900 dark:border-indigo-900/40 space-y-1">
                 <span className="font-bold text-indigo-700 dark:text-indigo-400 text-[10px] uppercase">Snack / Tea</span>
-                <p className="font-semibold text-slate-900 dark:text-slate-100">Ginger Tea & Walnuts</p>
-                <p className="text-[11px] text-slate-500">Fresh steeped ginger tea with lemon and a small handful of raw walnuts.</p>
+                <p className="font-semibold text-slate-900 dark:text-slate-100">Sukku Kaapi & Sundal</p>
+                <p className="text-[11px] text-slate-500">Dry ginger & coriander spiced brew with warm tempered black chickpea sundal.</p>
               </div>
             </div>
           </div>

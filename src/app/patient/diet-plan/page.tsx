@@ -6,6 +6,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Apple, UploadCloud, Camera, Sparkles, FileText, ArrowRight } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default async function PatientDietPlanPage() {
   const result = await getPatientDietPlan()
   const dietPlan = result.dietPlan

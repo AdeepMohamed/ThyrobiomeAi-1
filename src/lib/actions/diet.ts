@@ -178,8 +178,8 @@ export async function createDefaultFiveDayDietPlan(
   const isHighTSH = tsh?.value ? tsh.value > (tsh.referenceHigh || 4.5) : true
 
   const planSummary = isHighTSH
-    ? `5-Day Nutritional Protocol tailored to your TSH elevation (${tsh?.value ?? '9.89'} ${tsh?.unit ?? 'µIU/mL'}). Emphasizes 5'-deiodinase enzyme cofactors (Selenium, Zinc), clean L-Tyrosine proteins, and gentle soluble fibers for optimal gut motility.`
-    : `5-Day Precision Thyroid & Gut Microbiome Protocol designed to sustain metabolic balance, short-chain fatty acid gut fermentation, and stable cellular energy.`
+    ? `5-Day South Indian Precision Nutritional Protocol tailored to your TSH elevation (${tsh?.value ?? '9.89'} ${tsh?.unit ?? 'µIU/mL'}). Combines fermented digestive batters (Idli/Pesarattu), 5'-deiodinase enzyme cofactors (Selenium, Zinc), digestive rasams, moru (probiotic buttermilk), drumstick (Moringa) pods, and gentle coconut & lentil proteins for optimal thyroid conversion and enteric gut motility.`
+    : `5-Day South Indian Precision Thyroid & Gut Microbiome Protocol designed to sustain metabolic balance, probiotic moru gut flora, and steady cellular energy.`
 
   // Deactivate any previous plans
   await prisma.dietPlan.updateMany({
@@ -192,170 +192,170 @@ export async function createDefaultFiveDayDietPlan(
     data: {
       patientProfileId,
       reportId,
-      title: '5-Day Precision Thyroid Diet & Gut-Axis Protocol',
+      title: '5-Day South Indian Precision Thyroid & Gut-Axis Protocol',
       summary: planSummary,
       targetBiomarkers: {
         tsh: tsh ? { value: tsh.value, unit: tsh.unit, classification: tsh.classification } : null,
         ft4: ft4 ? { value: ft4.value, unit: ft4.unit, classification: ft4.classification } : null,
       },
       planJson: {
-        focus: '5-Deiodinase Conversion & Enteric Motility',
+        focus: 'South Indian Cuisine: Fermentation, 5\'-Deiodinase Cofactors & Digestive Moru',
         daysCount: 5,
       },
       isActive: true,
     },
   })
 
-  // 5 Days of structured recipes
+  // 5 Days of structured South Indian recipes
   const fiveDayMenu = [
     // DAY 1
     {
       day: 1,
       type: MealType.BREAKFAST,
-      title: 'Warm Spiced Steel-Cut Oats with Ground Chia & Brazil Nut',
-      recipe: 'Cooked steel-cut oats topped with 1 tbsp ground chia, 1/2 cup organic blueberries, cinnamon, and 1 finely chopped raw Brazil nut.',
-      cofactors: 'Selenium (100mcg from Brazil nut), Soluble Pectin, Omega-3 ALA',
+      title: 'Steamed Ragi Idli with Murungakkai (Drumstick) Sambar & 1 Brazil Nut',
+      recipe: '3 soft steamed finger-millet (ragi) idlis served with home-brewed yellow dal & drumstick sambar, fresh coconut-coriander chutney, and 1 raw Brazil nut.',
+      cofactors: 'Selenium (100mcg from Brazil nut), Moringa Polyphenols, Calcium, Natural Batter Fermentation',
     },
     {
       day: 1,
       type: MealType.LUNCH,
-      title: 'Grilled Alaskan Salmon & Rainbow Quinoa Bowl',
-      recipe: '120g wild salmon fillet served over fluffy warm quinoa, lightly steamed zucchini, roasted pumpkin seeds, and cold-pressed olive oil.',
-      cofactors: 'Zinc (pumpkin seeds), EPA/DHA Omega-3, Clean Tyrosine Protein',
+      title: 'Kerala Matta Rice with Ayala (Mackerel) Curry / Dal, Cabbage Thoran & Moru',
+      recipe: 'Warm Kerala red matta rice served with omega-3 rich Mackerel/Sardine curry (or Sprouted Moong Methi Dal), steamed cabbage-coconut thoran, and ginger-curry leaf spiced buttermilk (moru).',
+      cofactors: 'EPA/DHA Omega-3s, Zinc (dal), Probiotic Lactic Acid (moru), Clean Tyrosine',
     },
     {
       day: 1,
       type: MealType.SNACK,
-      title: 'Warm Fresh Ginger & Lemon Infusion with Raw Walnuts',
-      recipe: 'Fresh steeped ginger root with half a lemon slice and a small handful (~20g) of raw halved walnuts.',
-      cofactors: 'Gingerols (MMC Motility Stimulant), Polyphenols',
+      title: 'Sukku Kaapi (Dry Ginger & Coriander Herbal Brew) with Kondakadalai Sundal',
+      recipe: 'Traditional dry ginger, crushed coriander seeds & palm jaggery hot infusion served with 1/2 cup boiled tempered black chickpea sundal with fresh grated coconut.',
+      cofactors: 'Gingerols (MMC Enteric Motility), Resistant Starch, Plant Zinc & Iron',
     },
     {
       day: 1,
       type: MealType.DINNER,
-      title: 'Herb-Roasted Pasture Chicken with Baked Sweet Potato',
-      recipe: 'Oven-roasted chicken breast with rosemary, baked Japanese sweet potato, lightly steamed carrots, and 1 cup of warm mineral bone broth.',
-      cofactors: 'L-Tyrosine (24g Protein), Beta-Carotene, Glycine/Glutamine',
+      title: 'Oats & Moong Dal Pongal with Steamed Peerkangai (Ridge Gourd) Kootu',
+      recipe: 'Warm light pongal prepared with rolled oats and yellow moong dal tempered in 1 tsp pure ghee, cumin & black pepper, paired with gentle ridge gourd stew and clear pepper rasam.',
+      cofactors: 'L-Tyrosine (Moong Protein), Piperine (Enhances Absorption), Prebiotic Soluble Fiber',
     },
 
     // DAY 2
     {
       day: 2,
       type: MealType.BREAKFAST,
-      title: 'Golden Coconut Chia Pudding with Stewed Cinnamon Apples',
-      recipe: 'Chia seeds soaked overnight in coconut milk, topped with warm stewed apples, turmeric pinch, and crushed pumpkin seeds.',
-      cofactors: 'Pectin Prebiotic Fiber, Curcumin (Anti-inflammatory), Zinc',
+      title: 'Pesarattu (Whole Green Gram Moong Dosa) with Tomato-Ginger Chutney',
+      recipe: '2 crisp whole green moong crepes stuffed with chopped onions & ginger, served with fresh tomato-ginger chutney and roasted flaxseed podi.',
+      cofactors: 'High Bioavailable Plant Tyrosine (18g Protein), Alpha-Linolenic Acid (ALA), Gut Motility Ginger',
     },
     {
       day: 2,
       type: MealType.LUNCH,
-      title: 'Sprouted Lentil & Avocado Mediterranean Plate',
-      recipe: 'Warm cooked brown lentils with diced cucumber, kalamata olives, 1/4 avocado, parsley, and lemon-tahini dressing.',
-      cofactors: 'Plant Tyrosine, Monounsaturated Fats, Prebiotic Resistant Starch',
+      title: 'Brown Rice with Parangikai (Yellow Pumpkin) Sambar, Beans Poriyal & Jeera Chaas',
+      recipe: 'Steamed brown rice with carotenoid-rich pumpkin sambar, lightly steamed French beans poriyal with mustard tempering, and a glass of chilled jeera moru.',
+      cofactors: 'Beta-Carotene, Zinc, Soluble Inulin, Live Commensal Probiotics',
     },
     {
       day: 2,
       type: MealType.SNACK,
-      title: 'Coconut Yogurt with 1 Chopped Brazil Nut & Hemp Seeds',
-      recipe: 'Unsweetened probiotic coconut yogurt sprinkled with 1 raw Brazil nut and 1 tbsp hemp hearts.',
-      cofactors: 'Selenium (120mcg), Live Commensal Cultures, Plant Protein',
+      title: 'Fresh Elaneer (Tender Coconut Water) with Soaked Almonds & 1 Brazil Nut',
+      recipe: 'Pure tender coconut water with 5 soaked peeled almonds and 1 raw Brazil nut.',
+      cofactors: 'Selenium (120mcg), Natural Potassium & Electrolytes, Vitamin E',
     },
     {
       day: 2,
       type: MealType.DINNER,
-      title: 'Pan-Seared Pacific Cod with Sautéed Spinach & Butternut Squash',
-      recipe: 'Wild cod fillet pan-seared with garlic, served with lightly wilted spinach (citrus dressed) and roasted butternut squash.',
-      cofactors: 'Iodine (Food-Matrix 80mcg), Vitamin C + Non-Heme Iron, Vitamin A',
+      title: 'Steamed Idiyappam with Mixed Vegetable Sodhi & Sautéed Paneer / Fish',
+      recipe: 'Handmade steamed red rice string hoppers (idiyappam) served with coconut-milk vegetable stew (carrots, green peas, beans) and pan-seared turmeric paneer or fish.',
+      cofactors: 'Medium Chain Triglycerides (MCTs for Cellular Energy), Iodine, Bioavailable Protein',
     },
 
     // DAY 3
     {
       day: 3,
       type: MealType.BREAKFAST,
-      title: 'Pasture-Raised Scrambled Eggs with Avocado & Steamed Greens',
-      recipe: '2 organic eggs scrambled in ghee, served with 1/3 sliced avocado and lightly steamed baby chard.',
-      cofactors: 'Choline, Vitamin D3, Bioavailable L-Tyrosine Protein',
+      title: 'Red Rice Puttu with Steamed Kadala (Black Chickpea) Curry',
+      recipe: 'Steamed layered red rice puttu served with mildly spiced black chickpea (kadala) curry cooked with shallots, curry leaves, and coconut slices.',
+      cofactors: 'Resistant Prebiotic Starch, Low-Glycemic Complex Carbs, Iron & Zinc',
     },
     {
       day: 3,
       type: MealType.LUNCH,
-      title: 'Wild Sardines / Mackerel on Warm Gluten-Free Seed Toast',
-      recipe: 'Olive oil packed wild sardines mashed with lemon and sea salt, served on warm seed bread with cucumber ribbons.',
-      cofactors: 'Natural Marine Selenium, Calcium, Bioavailable Omega-3s',
+      title: 'Chettinad Country Chicken / Paneer Roast with Brown Rice, Garlic Rasam & Pudalangai Poriyal',
+      recipe: 'Black pepper-spiced country chicken or paneer roast served with steamed brown rice, hot garlic-coriander rasam, and steamed snake gourd poriyal.',
+      cofactors: 'High Satiety L-Tyrosine Protein (26g), Garlic Allicin (Antimicrobial Gut Support), Black Pepper Piperine',
     },
     {
       day: 3,
       type: MealType.SNACK,
-      title: 'Warm Bone Broth with Fresh Thyme & Garlic',
-      recipe: '1.5 cups simmered pasture chicken bone broth infused with crushed garlic and sea salt.',
-      cofactors: 'Intestinal Collagen Peptides, Electrolytes (Sodium/Potassium)',
+      title: 'Spiced Neer Mor (Buttermilk with Hing & Curry Leaves) with Roasted Makhana',
+      recipe: 'Freshly churned light buttermilk infused with crushed ginger, green chili, asafoetida (hing), and fresh curry leaves, served with lightly toasted spiced lotus seeds.',
+      cofactors: 'Carminative Spices, Gut Cooling Probiotics, Magnesium',
     },
     {
       day: 3,
       type: MealType.DINNER,
-      title: 'Turkey & Zucchini Meatballs in Gentle Tomato Basil Coulis',
-      recipe: 'Lean turkey meatballs with grated zucchini, served over cauliflower-potato mash and warm stewed tomato sauce.',
-      cofactors: 'Zinc (5mg), Vitamin B12, High-Satiety Protein',
+      title: 'Foxtail / Kodo Millet Kichadi with Moong Dal & Coconut Chammanthi',
+      recipe: 'Warm gluten-free foxtail millet and split moong dal cooked with turmeric, cumin, diced carrots, and beans, accompanied by fresh raw coconut-shallot chammanthi.',
+      cofactors: 'Ancient Millet B-Vitamins, Easy Digestibility, Gentle Enteric Fiber',
     },
 
     // DAY 4
     {
       day: 4,
       type: MealType.BREAKFAST,
-      title: 'Thyroid-Support Green Matcha Bowl (Low-Goitrogen)',
-      recipe: 'Gluten-free rolled oats cooked with unsweetened almond milk, ceremonial matcha, 1 chopped Brazil nut, and fresh raspberries.',
-      cofactors: 'Selenium (110mcg), EGCG Antioxidants, Anthocyanins',
+      title: 'Samba Wheat Rava Vegetable Upma with Roasted Pumpkin Seeds & Mint Chutney',
+      recipe: 'Cracked wheat / broken samba wheat upma loaded with green peas, carrots, and curry leaves, garnished with 2 tbsp toasted pumpkin seeds and fresh pudina chutney.',
+      cofactors: 'Zinc (4.5mg from pumpkin seeds), Chromium, Slow-Release Complex Fiber, Menthol Cooling',
     },
     {
       day: 4,
       type: MealType.LUNCH,
-      title: 'Warm Roasted Chicken & Golden Beet Quinoa Salad',
-      recipe: 'Sliced roast chicken breast, roasted golden beets, baby arugula, toasted sunflower seeds, and citrus vinaigrette.',
-      cofactors: 'Betaine (Methylation Support), Zinc, Soluble Fiber',
+      title: 'Pan-Seared Pomfret / Fish Masala with Matta Rice, Beetroot Poriyal & Kollu (Horse Gram) Rasam',
+      recipe: 'Turmeric & pepper coated pan-seared fish (or organic tofu/paneer) with Matta rice, vibrant antioxidant beetroot poriyal, and warm polyphenol-rich horse gram rasam.',
+      cofactors: 'Marine Organic Iodine & Selenium, Betaine for Liver Conjugation, Horse Gram Phenolics',
     },
     {
       day: 4,
       type: MealType.SNACK,
-      title: 'Chamomile & Peppermint Infusion with Pumpkin Seeds',
-      recipe: 'Fresh brewed chamomile-mint tea served with 2 tablespoons of dry-roasted pumpkin seeds.',
-      cofactors: 'Zinc (2.5mg), Vagal Nervous System Calming Terpenes',
+      title: 'Karuveppilai (Curry Leaf) & Mint Herbal Tea with Boiled Sprouted Moong Sundal',
+      recipe: 'Fresh boiled curry leaf & mint tea sweetened with a drop of raw honey, paired with warm sprouted green gram sundal with lemon juice.',
+      cofactors: 'Iron, Ascorbic Acid (Vitamin C for Iron Absorption), Commensal Prebiotic Flora',
     },
     {
       day: 4,
       type: MealType.DINNER,
-      title: 'Baked Wild Salmon with Steamed Asparagus & Wild Rice',
-      recipe: 'Wild salmon fillet baked with dill and lemon, accompanied by steamed asparagus spears and nutty wild rice.',
-      cofactors: 'Glutathione, Inulin Prebiotic Fiber, Vitamin B6',
+      title: 'Soft Ragi Dosa with Vegetable Ishtu (Kerala Stew) & Murungai Leaf Clear Soup',
+      recipe: '2 crisp finger-millet dosas with aromatic vegetable stew and a steaming bowl of fresh drumstick leaf (Moringa) soup.',
+      cofactors: 'Moringa Bio-Flavonoids, Calcium (344mg/100g in Ragi), Adrenal Support',
     },
 
     // DAY 5
     {
       day: 5,
       type: MealType.BREAKFAST,
-      title: 'Blueberry & Hemp Protein Porridge with Brazil Nut',
-      recipe: 'Warm oat bran and hemp protein porridge topped with wild blueberries, cinnamon, and 1 raw Brazil nut.',
-      cofactors: 'Selenium (120mcg), Complete Amino Acid Profile, Pectin',
+      title: 'Traditional Idli & Vada Plate (Steamed Idli + Baked Moong Dal Vada) with Sambar & 1 Brazil Nut',
+      recipe: '3 fluffy steamed idlis, 1 baked moong dal vada, piping hot mixed vegetable sambar, tomato chutney, and 1 raw Brazil nut.',
+      cofactors: 'Selenium (110mcg), Naturally Fermented Bioavailable Nutrients, Complete Protein Pairing',
     },
     {
       day: 5,
       type: MealType.LUNCH,
-      title: 'Mediterranean Grilled Chicken & Roasted Vegetable Medley',
-      recipe: 'Herb chicken breast with roasted carrots, bell peppers, parsnips, and kalamata olives.',
-      cofactors: 'Tyrosine (28g Protein), Polyphenols, Carotenoids',
+      title: 'Probiotic Millet Curd Rice with Pomegranate, Mustard Tempering & Seared Fish/Paneer',
+      recipe: 'Warm cooked foxtail millet mixed with fresh homemade set curd, tempered with mustard seeds, curry leaves, grated ginger, and ruby pomegranate arils, served with roasted spiced zucchini & paneer.',
+      cofactors: 'Bifidobacteria & Lactobacilli Live Cultures, Polyphenols, Anti-inflammatory Gut Barrier Coat',
     },
     {
       day: 5,
       type: MealType.SNACK,
-      title: 'Stewed Pears with Cardamom & 1 tbsp Chia Seeds',
-      recipe: 'Warm gently poached Bartlett pear with cardamom and soaked chia gel.',
-      cofactors: 'Soluble Osmotic Fiber, Digestive Enzymes',
+      title: 'Warm Stewed Nendran Banana / Poached Pears with Cardamom & Soaked Chia',
+      recipe: 'Gently steamed Kerala Nendran banana or Bartlett pear with crushed green cardamom and soaked chia gel.',
+      cofactors: 'Pectin & Inulin Prebiotic Soluble Fiber, Serotonin/Melatonin Precursors',
     },
     {
       day: 5,
       type: MealType.DINNER,
-      title: 'Slow-Cooked Beef Stew with Root Vegetables & Herbs',
-      recipe: 'Tender grass-fed beef chuck simmered with carrots, celery, parsnips, and fresh thyme in rich bone broth.',
-      cofactors: 'Heme Iron, Zinc (7mg), Glycine for Gut Mucosa',
+      title: 'Moong Dal & Bottle Gourd (Sorakkai) Kootu with Warm Red Rice & Jeera Rasam',
+      recipe: 'Yellow moong dal stewed with hydrating bottle gourd, cumin, and coconut, served with a small bowl of steamed red rice and warm digestion-boosting jeera water.',
+      cofactors: 'High Osmotic Hydration, Gentle Overnight Gastric Emptying, Zinc & Glutamine',
     },
   ]
 
