@@ -37,6 +37,16 @@ export const authConfig = {
       }
       return session
     },
+    async redirect({ url, baseUrl }: any) {
+      if (url.startsWith('/')) return url
+      try {
+        const parsed = new URL(url)
+        if (parsed.origin === baseUrl) return url
+        return parsed.pathname + parsed.search
+      } catch {
+        return baseUrl || '/'
+      }
+    },
   },
   pages: {
     signIn: '/login',

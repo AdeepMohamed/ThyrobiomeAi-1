@@ -102,6 +102,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session
     },
+    async redirect({ url, baseUrl }) {
+      // If relative URL, stay on relative URL
+      if (url.startsWith('/')) return url
+      // If on same host, allow
+      try {
+        const parsed = new URL(url)
+        if (parsed.origin === baseUrl) return url
+        return parsed.pathname + parsed.search
+      } catch {
+        return baseUrl || '/'
+      }
+    },
   },
   pages: {
     signIn: '/login',
