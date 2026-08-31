@@ -74,21 +74,21 @@ export function DietTrackerView({ dietPlan }: { dietPlan: DietPlanData }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Top Banner: Protocol Summary & 5-Day Adherence */}
       <Card className="border-teal-200/80 bg-gradient-to-r from-teal-50/90 via-emerald-50/40 to-white dark:border-teal-900/60 dark:from-teal-950/40 dark:to-slate-900 overflow-hidden shadow-xs">
-        <CardContent className="p-5 sm:p-6 space-y-4">
+        <CardContent className="p-4 sm:p-6 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Badge variant="default" className="bg-teal-600 hover:bg-teal-700 text-xs">
+                <Badge variant="default" className="bg-teal-600 hover:bg-teal-700 text-[10px] sm:text-xs">
                   5-Day Active Protocol
                 </Badge>
-                <span className="text-xs text-slate-500 font-semibold">
+                <span className="text-[11px] sm:text-xs text-slate-500 font-semibold">
                   Personalized from Verified Report
                 </span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">
+              <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100">
                 {dietPlan.title}
               </h2>
               <p className="text-xs text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
@@ -96,11 +96,11 @@ export function DietTrackerView({ dietPlan }: { dietPlan: DietPlanData }) {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-teal-200 bg-white/90 p-4 text-center dark:border-teal-900/60 dark:bg-slate-900 shrink-0 min-w-[160px]">
+            <div className="rounded-2xl border border-teal-200 bg-white/90 p-3.5 sm:p-4 text-center dark:border-teal-900/60 dark:bg-slate-900 shrink-0 w-full sm:w-auto sm:min-w-[160px]">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                 5-Day Meal Adherence
               </span>
-              <p className="text-2xl font-extrabold text-teal-600 dark:text-teal-400 mt-0.5">
+              <p className="text-xl sm:text-2xl font-extrabold text-teal-600 dark:text-teal-400 mt-0.5">
                 {completedMeals} / {totalMeals}
               </p>
               <Progress value={progressPercent} className="h-2 mt-2 bg-teal-100 dark:bg-teal-950" />
@@ -111,7 +111,7 @@ export function DietTrackerView({ dietPlan }: { dietPlan: DietPlanData }) {
       </Card>
 
       {/* Day Selector Tabs (Day 1 -> Day 5) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2">
+      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1.5 no-scrollbar">
         {[1, 2, 3, 4, 5].map((day) => {
           const dayEntries = entries.filter((e) => e.dayNumber === day)
           const dayCompleted = dayEntries.filter((e) => e.isCompleted).length
@@ -121,24 +121,24 @@ export function DietTrackerView({ dietPlan }: { dietPlan: DietPlanData }) {
             <button
               key={day}
               onClick={() => setSelectedDay(day)}
-              className={`flex-1 min-w-[120px] rounded-2xl border p-3 text-left transition-all ${
+              className={`flex-1 min-w-[105px] sm:min-w-[120px] rounded-xl sm:rounded-2xl border p-2.5 sm:p-3 text-left transition-all shrink-0 cursor-pointer ${
                 isSelected
                   ? 'border-teal-600 bg-teal-600 text-white shadow-md'
                   : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200'
               }`}
             >
-              <div className="flex items-center justify-between text-xs font-bold mb-1">
+              <div className="flex items-center justify-between text-xs font-bold mb-0.5 sm:mb-1">
                 <span>Day {day}</span>
                 {dayCompleted === 4 ? (
-                  <CheckCircle2 className={`h-4 w-4 ${isSelected ? 'text-white' : 'text-emerald-500'}`} />
+                  <CheckCircle2 className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${isSelected ? 'text-white' : 'text-emerald-500'}`} />
                 ) : (
                   <span className={`text-[10px] ${isSelected ? 'text-teal-100' : 'text-slate-400'}`}>
                     {dayCompleted}/4
                   </span>
                 )}
               </div>
-              <p className={`text-[11px] truncate ${isSelected ? 'text-teal-100' : 'text-slate-500'}`}>
-                {day === 1 ? 'Conversion Launch' : day === 2 ? 'Prebiotic Motility' : day === 3 ? 'Mineral Fortification' : day === 4 ? 'Antioxidant Shield' : 'Gut Barrier Nourish'}
+              <p className={`text-[10px] sm:text-[11px] truncate ${isSelected ? 'text-teal-100' : 'text-slate-500'}`}>
+                {day === 1 ? 'Conversion Launch' : day === 2 ? 'Prebiotic Motility' : day === 3 ? 'Mineral Fortify' : day === 4 ? 'Antioxidants' : 'Gut Barrier'}
               </p>
             </button>
           )
@@ -146,20 +146,22 @@ export function DietTrackerView({ dietPlan }: { dietPlan: DietPlanData }) {
       </div>
 
       {/* Daily Routine Focus Banner */}
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs dark:border-slate-800 dark:bg-slate-900 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <Pill className="h-4 w-4 text-teal-600" />
-          <span className="font-semibold text-slate-800 dark:text-slate-200">Thyroid Hormone Timing:</span>
-          <span className="text-slate-600 dark:text-slate-400">Take on empty stomach 4 hours away from calcium, iron, or coffee.</span>
+      <div className="rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:p-4 text-xs dark:border-slate-800 dark:bg-slate-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 sm:gap-4">
+        <div className="flex items-start sm:items-center gap-2">
+          <Pill className="h-4 w-4 text-teal-600 shrink-0 mt-0.5 sm:mt-0" />
+          <div>
+            <span className="font-semibold text-slate-800 dark:text-slate-200">Thyroid Hormone Timing: </span>
+            <span className="text-slate-600 dark:text-slate-400">Take on empty stomach 4h away from calcium, iron, coffee.</span>
+          </div>
         </div>
-        <div className="flex items-center gap-4 text-[11px] text-slate-500">
-          <span className="flex items-center gap-1"><Droplets className="h-3.5 w-3.5 text-sky-500" /> 2.0-2.5L Hydration Target</span>
-          <span className="flex items-center gap-1"><Activity className="h-3.5 w-3.5 text-emerald-500" /> 30-min Walking Goal</span>
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-[11px] text-slate-500">
+          <span className="flex items-center gap-1"><Droplets className="h-3.5 w-3.5 text-sky-500" /> 2.0-2.5L Water</span>
+          <span className="flex items-center gap-1"><Activity className="h-3.5 w-3.5 text-emerald-500" /> 30m Walking</span>
         </div>
       </div>
 
       {/* Meal Cards for Selected Day */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {dayMeals.map((meal) => (
           <MealCardItem
             key={meal.id}

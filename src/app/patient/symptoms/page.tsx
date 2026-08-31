@@ -89,13 +89,13 @@ export default function SymptomsPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-5 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
-          <Activity className="h-6 w-6 text-teal-600" />
-          Thyroid & Metabolic Symptoms Log
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-teal-600 shrink-0" />
+          <span>Thyroid & Metabolic Symptoms Log</span>
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">
           Select symptom severities and frequencies to give context to your laboratory hormone levels
         </p>
       </div>
@@ -103,13 +103,13 @@ export default function SymptomsPage() {
       <Card className="shadow-xs">
         <form onSubmit={handleSubmit}>
           <CardHeader>
-            <CardTitle className="text-lg">Clinical Symptom Tracker</CardTitle>
+            <CardTitle className="text-base sm:text-lg">Clinical Symptom Tracker</CardTitle>
             <CardDescription>
               Mark any sensations or physiological changes you have experienced over the past 30 days
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 sm:space-y-6">
             {message && (
               <div
                 className={`flex items-center gap-2 rounded-xl p-3.5 text-xs font-medium ${
@@ -135,18 +135,18 @@ export default function SymptomsPage() {
                 return (
                   <div
                     key={symptom.id}
-                    className={`py-4 px-2 sm:px-4 rounded-xl transition-all ${
+                    className={`py-3 sm:py-4 px-2 sm:px-4 rounded-xl transition-all ${
                       isActive
                         ? 'bg-teal-50/40 dark:bg-teal-950/20'
                         : 'hover:bg-slate-50/50 dark:hover:bg-slate-900/50'
                     }`}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 sm:gap-3">
                       <div className="space-y-0.5 max-w-sm">
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                        <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                           {symptom.name}
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
                           {symptom.desc}
                         </p>
                       </div>
@@ -158,7 +158,7 @@ export default function SymptomsPage() {
                             key={level}
                             type="button"
                             onClick={() => handleSeverityChange(symptom.id, level)}
-                            className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+                            className={`rounded-lg px-2 sm:px-2.5 py-1 sm:py-1.5 text-xs font-semibold transition-all cursor-pointer ${
                               current.severity === level
                                 ? level === 'SEVERE'
                                   ? 'bg-rose-600 text-white shadow-xs'
@@ -184,11 +184,11 @@ export default function SymptomsPage() {
                                 e.target.value as 'NEVER' | 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS'
                               )
                             }
-                            className="ml-2 rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-700 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+                            className="ml-1 sm:ml-2 rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-700 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
                           >
                             <option value="SOMETIMES">Sometimes</option>
                             <option value="OFTEN">Often</option>
-                            <option value="ALWAYS">Constant / Daily</option>
+                            <option value="ALWAYS">Constant</option>
                             <option value="RARELY">Rarely</option>
                           </select>
                         )}
@@ -200,11 +200,11 @@ export default function SymptomsPage() {
             </div>
           </CardContent>
 
-          <CardFooter className="flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
-            <p className="text-xs text-slate-400">
+          <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 border-t border-slate-100 pt-4 dark:border-slate-800">
+            <p className="text-xs text-slate-400 text-center sm:text-left">
               Next: Medical History & Current Medications
             </p>
-            <Button type="submit" variant="gradient" disabled={isSaving}>
+            <Button type="submit" variant="gradient" disabled={isSaving} className="w-full sm:w-auto">
               {isSaving ? 'Saving...' : 'Save Symptoms & Continue'}
               {!isSaving && <ArrowRight className="ml-2 h-4 w-4" />}
             </Button>

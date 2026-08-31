@@ -54,7 +54,7 @@ export default async function FullReportViewPage({ params }: PageProps) {
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-12">
       {/* Top Action Bar (hidden in print) */}
-      <div className="no-print flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-4 dark:border-slate-800">
+      <div className="no-print flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-4 dark:border-slate-800">
         <Link
           href="/patient/reports"
           className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-slate-100"
@@ -63,10 +63,10 @@ export default async function FullReportViewPage({ params }: PageProps) {
           Back to Reports History
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <PrintButton />
           <Link href="/patient/report/upload">
-            <Button size="sm" variant="gradient">
+            <Button size="sm" variant="gradient" className="text-xs">
               Upload New Report
             </Button>
           </Link>
@@ -74,19 +74,19 @@ export default async function FullReportViewPage({ params }: PageProps) {
       </div>
 
       {/* Main Printable Medical Report Document */}
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-10 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-8 print-shadow-none">
+      <div className="rounded-2xl sm:rounded-3xl border border-slate-200 bg-white p-4 sm:p-10 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-6 sm:space-y-8 print-shadow-none">
         
         {/* Document Header */}
-        <div className="border-b border-slate-200 pb-6 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-teal-600 to-indigo-600 text-white shadow-md">
-              <ShieldCheck className="h-7 w-7" />
+        <div className="border-b border-slate-200 pb-5 sm:pb-6 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-3 sm:gap-3.5">
+            <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-tr from-teal-600 to-indigo-600 text-white shadow-md shrink-0">
+              <ShieldCheck className="h-6 w-6 sm:h-7 sm:w-7" />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
                 THYRO<span className="text-teal-600 dark:text-teal-400">BIOME</span>AI
               </h1>
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+              <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-widest">
                 Personalized Thyroid Health & Gut-Axis Report
               </p>
             </div>
@@ -103,11 +103,11 @@ export default async function FullReportViewPage({ params }: PageProps) {
                   ? 'info'
                   : 'success'
               }
-              className="text-xs uppercase px-3 py-1 font-bold tracking-wider"
+              className="text-[10px] sm:text-xs uppercase px-2.5 sm:px-3 py-0.5 sm:py-1 font-bold tracking-wider"
             >
               {overallStatus.replace(/_/g, ' ')}
             </Badge>
-            <p className="text-[11px] text-slate-400 mt-1">
+            <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">
               Generated: {formatDate(analysis?.createdAt || report.createdAt)}
             </p>
           </div>
@@ -115,38 +115,38 @@ export default async function FullReportViewPage({ params }: PageProps) {
 
         {/* SECTION 1: Patient Summary */}
         <section className="space-y-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-2">
+          <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-2">
             <HeartPulse className="h-4 w-4 text-teal-600" />
             1. Patient Biometrics & Demographics
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60 text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 sm:gap-3 rounded-2xl bg-slate-50 p-3 sm:p-4 dark:bg-slate-800/60 text-xs">
             <div>
-              <span className="text-slate-400 uppercase font-semibold text-[10px]">Patient Name</span>
-              <p className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">
+              <span className="text-slate-400 uppercase font-semibold text-[9px] sm:text-[10px]">Patient Name</span>
+              <p className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm mt-0.5 truncate">
                 {patient.user.name || 'Confidential'}
               </p>
             </div>
             <div>
-              <span className="text-slate-400 uppercase font-semibold text-[10px]">Age / Sex</span>
-              <p className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">
+              <span className="text-slate-400 uppercase font-semibold text-[9px] sm:text-[10px]">Age / Sex</span>
+              <p className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm mt-0.5">
                 {patient.age || '—'} yrs / {patient.sex || '—'}
               </p>
             </div>
             <div>
-              <span className="text-slate-400 uppercase font-semibold text-[10px]">Height / Weight</span>
-              <p className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">
+              <span className="text-slate-400 uppercase font-semibold text-[9px] sm:text-[10px]">Height / Weight</span>
+              <p className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm mt-0.5">
                 {patient.height ? `${patient.height} cm` : '—'} / {patient.weight ? `${patient.weight} kg` : '—'}
               </p>
             </div>
             <div>
-              <span className="text-slate-400 uppercase font-semibold text-[10px]">Body Mass Index</span>
-              <p className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">
+              <span className="text-slate-400 uppercase font-semibold text-[9px] sm:text-[10px]">Body Mass Index</span>
+              <p className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm mt-0.5">
                 {patient.bmi ? `${patient.bmi} kg/m²` : '—'}
               </p>
             </div>
             <div>
-              <span className="text-slate-400 uppercase font-semibold text-[10px]">BMI Classification</span>
-              <p className="font-bold text-teal-700 dark:text-teal-300 text-sm mt-0.5">
+              <span className="text-slate-400 uppercase font-semibold text-[9px] sm:text-[10px]">BMI Classification</span>
+              <p className="font-bold text-teal-700 dark:text-teal-300 text-xs sm:text-sm mt-0.5">
                 {patient.bmi ? getBMICategory(patient.bmi) : '—'}
               </p>
             </div>
@@ -155,14 +155,14 @@ export default async function FullReportViewPage({ params }: PageProps) {
 
         {/* SECTION 2: Report Metadata & History */}
         <section className="space-y-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-2">
+          <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-2">
             <FileText className="h-4 w-4 text-teal-600" />
             2. Source Report Information & Verification
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-2xl border border-slate-200 p-4 text-xs dark:border-slate-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 rounded-2xl border border-slate-200 p-3 sm:p-4 text-xs dark:border-slate-800">
             <div>
               <span className="text-slate-400 font-medium">Source Document:</span>
-              <p className="font-semibold text-slate-900 dark:text-slate-100 mt-0.5">{report.fileName}</p>
+              <p className="font-semibold text-slate-900 dark:text-slate-100 mt-0.5 truncate">{report.fileName}</p>
             </div>
             <div>
               <span className="text-slate-400 font-medium">Verification Status:</span>
@@ -181,33 +181,33 @@ export default async function FullReportViewPage({ params }: PageProps) {
 
         {/* SECTION 3: Laboratory Results Table */}
         <section className="space-y-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-2">
+          <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-2">
             <Activity className="h-4 w-4 text-teal-600" />
             3. Laboratory Hormone Results & Reference Comparisons
           </h2>
-          <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-            <table className="w-full text-left text-xs">
+          <div className="overflow-x-auto no-scrollbar rounded-2xl border border-slate-200 dark:border-slate-800">
+            <table className="w-full min-w-[500px] text-left text-xs">
               <thead className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 font-semibold uppercase tracking-wider">
                 <tr>
-                  <th className="p-3.5">Test Name</th>
-                  <th className="p-3.5">Patient Value</th>
-                  <th className="p-3.5">Unit</th>
-                  <th className="p-3.5">Printed Reference Range</th>
-                  <th className="p-3.5 text-right">Status</th>
+                  <th className="p-3 sm:p-3.5">Test Name</th>
+                  <th className="p-3 sm:p-3.5">Patient Value</th>
+                  <th className="p-3 sm:p-3.5">Unit</th>
+                  <th className="p-3 sm:p-3.5">Printed Reference Range</th>
+                  <th className="p-3 sm:p-3.5 text-right">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {report.labResults.map((lab) => (
                   <tr key={lab.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
-                    <td className="p-3.5 font-bold text-slate-900 dark:text-slate-100">{lab.testName}</td>
-                    <td className="p-3.5 font-extrabold text-slate-900 dark:text-slate-100 text-sm">
+                    <td className="p-3 sm:p-3.5 font-bold text-slate-900 dark:text-slate-100">{lab.testName}</td>
+                    <td className="p-3 sm:p-3.5 font-extrabold text-slate-900 dark:text-slate-100 text-sm">
                       {lab.value ?? lab.valueText}
                     </td>
-                    <td className="p-3.5 text-slate-500">{lab.unit || '—'}</td>
-                    <td className="p-3.5 text-slate-700 dark:text-slate-300 font-medium">
+                    <td className="p-3 sm:p-3.5 text-slate-500">{lab.unit || '—'}</td>
+                    <td className="p-3 sm:p-3.5 text-slate-700 dark:text-slate-300 font-medium">
                       {lab.referenceText || 'Unavailable'}
                     </td>
-                    <td className="p-3.5 text-right">
+                    <td className="p-3 sm:p-3.5 text-right">
                       <Badge
                         variant={
                           lab.classification === LabClassification.HIGH || lab.classification === LabClassification.LOW

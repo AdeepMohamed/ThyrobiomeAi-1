@@ -49,13 +49,13 @@ export default function LifestylePage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-5 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
-          <Apple className="h-6 w-6 text-teal-600" />
-          Diet & Daily Lifestyle Profile
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <Apple className="h-5 w-5 sm:h-6 sm:w-6 text-teal-600 shrink-0" />
+          <span>Diet & Daily Lifestyle Profile</span>
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">
           Provide information on nutrition, activity, rest, and hydration to power personalized AI diet recommendations
         </p>
       </div>
@@ -63,13 +63,13 @@ export default function LifestylePage() {
       <Card className="shadow-xs">
         <form onSubmit={handleSubmit}>
           <CardHeader>
-            <CardTitle className="text-lg">Nutritional & Daily Routine Habits</CardTitle>
+            <CardTitle className="text-base sm:text-lg">Nutritional & Daily Routine Habits</CardTitle>
             <CardDescription>
               Factors influencing cellular thyroid hormone activation and metabolic reserve
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-5 sm:space-y-6">
             {message && (
               <div
                 className={`flex items-center gap-2 rounded-xl p-3.5 text-xs font-medium ${
@@ -101,7 +101,7 @@ export default function LifestylePage() {
                     key={item.value}
                     type="button"
                     onClick={() => setFormData({ ...formData, dietType: item.value })}
-                    className={`rounded-xl border p-3 text-xs font-semibold transition-all cursor-pointer ${
+                    className={`rounded-xl border p-2.5 sm:p-3 text-xs font-semibold transition-all cursor-pointer ${
                       formData.dietType === item.value
                         ? 'border-teal-500 bg-teal-50 text-teal-950 dark:bg-teal-950 dark:text-teal-200 shadow-xs'
                         : 'border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900'
@@ -121,7 +121,7 @@ export default function LifestylePage() {
                   id="fiberIntake"
                   value={formData.fiberIntake}
                   onChange={(e) => setFormData({ ...formData, fiberIntake: e.target.value })}
-                  className="flex h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:border-slate-800 dark:bg-slate-950"
+                  className="flex h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:border-slate-800 dark:bg-slate-950"
                 >
                   <option value="RARELY">Low / Rarely (Few vegetables/grains)</option>
                   <option value="SOMETIMES">Moderate / Sometimes (1-2 servings daily)</option>
@@ -136,7 +136,7 @@ export default function LifestylePage() {
                   id="fermentedFoodIntake"
                   value={formData.fermentedFoodIntake}
                   onChange={(e) => setFormData({ ...formData, fermentedFoodIntake: e.target.value })}
-                  className="flex h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:border-slate-800 dark:bg-slate-950"
+                  className="flex h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:border-slate-800 dark:bg-slate-950"
                 >
                   <option value="NEVER">Never</option>
                   <option value="RARELY">Rarely (Less than once a week)</option>
@@ -164,7 +164,7 @@ export default function LifestylePage() {
                     key={item.value}
                     type="button"
                     onClick={() => setFormData({ ...formData, activityLevel: item.value })}
-                    className={`rounded-xl border p-2.5 text-xs font-semibold transition-all cursor-pointer ${
+                    className={`rounded-xl border p-2 sm:p-2.5 text-[11px] sm:text-xs font-semibold transition-all cursor-pointer ${
                       formData.activityLevel === item.value
                         ? 'border-teal-500 bg-teal-50 text-teal-950 dark:bg-teal-950 dark:text-teal-200 shadow-xs'
                         : 'border-slate-200 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900'
@@ -191,6 +191,7 @@ export default function LifestylePage() {
                   max="16"
                   value={formData.sleepHours}
                   onChange={(e) => setFormData({ ...formData, sleepHours: parseFloat(e.target.value) || 7 })}
+                  className="text-xs sm:text-sm"
                 />
               </div>
 
@@ -203,7 +204,7 @@ export default function LifestylePage() {
                   id="stressLevel"
                   value={formData.stressLevel}
                   onChange={(e) => setFormData({ ...formData, stressLevel: e.target.value })}
-                  className="flex h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:border-slate-800 dark:bg-slate-950"
+                  className="flex h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 dark:border-slate-800 dark:bg-slate-950"
                 >
                   <option value="LOW">Low Stress</option>
                   <option value="MODERATE">Moderate Stress</option>
@@ -225,16 +226,17 @@ export default function LifestylePage() {
                   max="10"
                   value={formData.waterIntake}
                   onChange={(e) => setFormData({ ...formData, waterIntake: parseFloat(e.target.value) || 2 })}
+                  className="text-xs sm:text-sm"
                 />
               </div>
             </div>
           </CardContent>
 
-          <CardFooter className="flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
-            <p className="text-xs text-slate-400">
+          <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 border-t border-slate-100 pt-4 dark:border-slate-800">
+            <p className="text-xs text-slate-400 text-center sm:text-left">
               Next: Gut Health & Microbiome Parameters
             </p>
-            <Button type="submit" variant="gradient" disabled={isSaving}>
+            <Button type="submit" variant="gradient" disabled={isSaving} className="w-full sm:w-auto">
               {isSaving ? 'Saving...' : 'Save & Continue to Gut Health'}
               {!isSaving && <ArrowRight className="ml-2 h-4 w-4" />}
             </Button>

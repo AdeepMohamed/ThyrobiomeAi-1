@@ -34,25 +34,25 @@ export default async function PatientDashboardPage() {
   return (
     <div className="space-y-6">
       {/* Welcome Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
             Welcome back, {userName}
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
             ThyroBiomeAI Health Overview & Personalized Pattern Insights
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Link href="/patient/report/upload">
-            <Button variant="gradient" className="shadow-sm">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full md:w-auto">
+          <Link href="/patient/report/upload" className="w-full sm:w-auto">
+            <Button variant="gradient" className="w-full sm:w-auto shadow-xs text-xs sm:text-sm h-9 sm:h-10">
               <UploadCloud className="mr-2 h-4 w-4" />
               Upload New Report
             </Button>
           </Link>
-          <Link href="/patient/analysis">
-            <Button variant="outline" className="border-teal-300 text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:text-teal-300 dark:hover:bg-teal-950">
+          <Link href="/patient/analysis" className="w-full sm:w-auto">
+            <Button variant="outline" className="w-full sm:w-auto border-teal-300 text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:text-teal-300 dark:hover:bg-teal-950 text-xs sm:text-sm h-9 sm:h-10">
               <Sparkles className="mr-2 h-4 w-4 text-teal-600" />
               Run Analysis
             </Button>
@@ -75,30 +75,30 @@ export default async function PatientDashboardPage() {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2.5">
                 {overallStatus === OverallStatus.CRITICAL_REVIEW ? (
-                  <div className="rounded-xl bg-rose-600 p-2 text-white">
+                  <div className="rounded-xl bg-rose-600 p-2 text-white shrink-0">
                     <ShieldAlert className="h-5 w-5" />
                   </div>
                 ) : overallStatus === OverallStatus.MEDICAL_REVIEW_RECOMMENDED ? (
-                  <div className="rounded-xl bg-amber-600 p-2 text-white">
+                  <div className="rounded-xl bg-amber-600 p-2 text-white shrink-0">
                     <AlertTriangle className="h-5 w-5" />
                   </div>
                 ) : overallStatus === OverallStatus.NEEDS_ATTENTION ? (
-                  <div className="rounded-xl bg-sky-600 p-2 text-white">
+                  <div className="rounded-xl bg-sky-600 p-2 text-white shrink-0">
                     <AlertCircle className="h-5 w-5" />
                   </div>
                 ) : (
-                  <div className="rounded-xl bg-emerald-600 p-2 text-white">
+                  <div className="rounded-xl bg-emerald-600 p-2 text-white shrink-0">
                     <CheckCircle2 className="h-5 w-5" />
                   </div>
                 )}
                 <div>
-                  <CardTitle className="text-lg">
+                  <CardTitle className="text-base sm:text-lg">
                     {overallStatus === OverallStatus.CRITICAL_REVIEW && 'Potentially Urgent Finding'}
                     {overallStatus === OverallStatus.MEDICAL_REVIEW_RECOMMENDED && 'Medical Review Recommended'}
                     {overallStatus === OverallStatus.NEEDS_ATTENTION && 'Pattern Needs Attention'}
                     {overallStatus === OverallStatus.NO_MAJOR_CONCERN && 'No Major Concern Detected'}
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-xs">
                     Latest AI Assessment from {formatDate(latestAnalysis.createdAt)}
                   </CardDescription>
                 </div>
@@ -114,7 +114,7 @@ export default async function PatientDashboardPage() {
                     ? 'info'
                     : 'success'
                 }
-                className="text-xs px-3 py-1 uppercase tracking-wider"
+                className="text-[10px] sm:text-xs px-2.5 sm:px-3 py-0.5 sm:py-1 uppercase tracking-wider"
               >
                 {overallStatus.replace(/_/g, ' ')}
               </Badge>
@@ -123,33 +123,33 @@ export default async function PatientDashboardPage() {
 
           <CardContent className="space-y-3">
             {overallStatus === OverallStatus.CRITICAL_REVIEW && (
-              <div className="rounded-xl bg-rose-100/80 p-3.5 text-xs text-rose-950 dark:bg-rose-950/70 dark:text-rose-200">
-                <p className="font-semibold text-sm mb-1">Important Safety Notice:</p>
-                <p>
+              <div className="rounded-xl bg-rose-100/80 p-3 sm:p-3.5 text-xs text-rose-950 dark:bg-rose-950/70 dark:text-rose-200">
+                <p className="font-semibold text-xs sm:text-sm mb-1">Important Safety Notice:</p>
+                <p className="text-[11px] sm:text-xs">
                   Some reported values or symptoms may require prompt medical evaluation. Please contact a qualified healthcare professional or appropriate emergency service if you are experiencing severe or worsening symptoms.
                 </p>
               </div>
             )}
 
             {overallStatus === OverallStatus.MEDICAL_REVIEW_RECOMMENDED && (
-              <div className="rounded-xl bg-amber-100/80 p-3.5 text-xs text-amber-950 dark:bg-amber-950/70 dark:text-amber-200">
-                <p className="font-semibold text-sm mb-1">Clinical Evaluation Recommended:</p>
-                <p>
+              <div className="rounded-xl bg-amber-100/80 p-3 sm:p-3.5 text-xs text-amber-950 dark:bg-amber-950/70 dark:text-amber-200">
+                <p className="font-semibold text-xs sm:text-sm mb-1">Clinical Evaluation Recommended:</p>
+                <p className="text-[11px] sm:text-xs">
                   Your report contains findings that may require professional medical evaluation. Please consult a qualified healthcare professional.
                 </p>
               </div>
             )}
 
-            <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+            <p className="text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300">
               {latestAnalysis.summary}
             </p>
 
-            <div className="flex flex-wrap items-center justify-between pt-2 border-t border-slate-200/60 dark:border-slate-800 gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-2 border-t border-slate-200/60 dark:border-slate-800 gap-2 sm:gap-3">
               <span className="text-xs text-slate-500 dark:text-slate-400">
                 Pattern: <strong className="text-slate-800 dark:text-slate-200">{latestAnalysis.thyroidPattern || 'Pattern Assessed'}</strong>
               </span>
-              <Link href={`/patient/reports/${latestAnalysis.reportId}`}>
-                <Button size="sm" variant="outline" className="gap-1.5 text-xs font-semibold">
+              <Link href={`/patient/reports/${latestAnalysis.reportId}`} className="w-full sm:w-auto">
+                <Button size="sm" variant="outline" className="w-full sm:w-auto gap-1.5 text-xs font-semibold">
                   View Full Comprehensive Report
                   <ChevronRight className="h-3.5 w-3.5" />
                 </Button>
@@ -158,21 +158,21 @@ export default async function PatientDashboardPage() {
           </CardContent>
         </Card>
       ) : (
-        <Card className="border-dashed border-2 border-teal-200 bg-teal-50/30 p-6 dark:border-teal-900/60 dark:bg-teal-950/20">
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-            <div className="rounded-2xl bg-teal-600/10 p-4 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
-              <Sparkles className="h-8 w-8" />
+        <Card className="border-dashed border-2 border-teal-200 bg-teal-50/30 p-4 sm:p-6 dark:border-teal-900/60 dark:bg-teal-950/20">
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-center sm:text-left">
+            <div className="rounded-2xl bg-teal-600/10 p-3 sm:p-4 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 shrink-0">
+              <Sparkles className="h-6 w-6 sm:h-8 sm:w-8" />
             </div>
             <div className="space-y-1 flex-1">
-              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+              <h3 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100">
                 No AI Analysis Generated Yet
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Upload your thyroid laboratory report to receive AI-supported pattern interpretation and personalized gut-thyroid dietary insights.
               </p>
             </div>
-            <Link href="/patient/report/upload">
-              <Button variant="gradient" size="sm">
+            <Link href="/patient/report/upload" className="w-full sm:w-auto">
+              <Button variant="gradient" size="sm" className="w-full sm:w-auto">
                 Get Started
                 <ArrowRight className="ml-1.5 h-4 w-4" />
               </Button>

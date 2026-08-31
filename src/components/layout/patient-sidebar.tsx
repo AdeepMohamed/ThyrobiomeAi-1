@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const patientNavItems = [
+export const patientNavItems = [
   {
     title: 'Overview',
     href: '/patient/dashboard',

@@ -92,34 +92,34 @@ export default function AIAnalysisPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-5 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
-          <Sparkles className="h-6 w-6 text-teal-600" />
-          AI Thyroid & Gut-Health Analysis
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-teal-600 shrink-0" />
+          <span>AI Thyroid & Gut-Health Analysis</span>
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">
           Execute our multi-step Grok 3 AI clinical reasoning engine with deterministic medical safety guardrails
         </p>
       </div>
 
       <Card className="shadow-xs overflow-hidden">
         <CardHeader>
-          <CardTitle className="text-lg flex items-center justify-between">
-            <span>7-Step Clinical Reasoning Engine</span>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <CardTitle className="text-base sm:text-lg">7-Step Clinical Reasoning Engine</CardTitle>
             {isRunning && (
               <span className="text-xs font-semibold text-teal-600 flex items-center gap-1.5 animate-pulse">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 Processing Step {currentStep} of 7
               </span>
             )}
-          </CardTitle>
+          </div>
           <CardDescription>
             ThyroBiomeAI executes strict safety rule validation before generating personalized lifestyle guidance
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-5 sm:space-y-6">
           {error && (
             <div className="flex items-center gap-2 rounded-xl bg-rose-50 p-3.5 text-xs text-rose-800 border border-rose-200 dark:bg-rose-950/50 dark:text-rose-200">
               <AlertCircle className="h-4 w-4 shrink-0" />
@@ -129,7 +129,7 @@ export default function AIAnalysisPage() {
 
           {/* Live Progress Bar */}
           {isRunning && (
-            <div className="space-y-2 bg-slate-50/80 p-4 rounded-2xl border border-slate-200 dark:bg-slate-900/60 dark:border-slate-800">
+            <div className="space-y-2 bg-slate-50/80 p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:bg-slate-900/60 dark:border-slate-800">
               <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300">
                 <span>Analysis Progress</span>
                 <span className="text-teal-600 dark:text-teal-400">{progress}%</span>
@@ -139,7 +139,7 @@ export default function AIAnalysisPage() {
           )}
 
           {/* 7-Step Visual Sequence List */}
-          <div className="space-y-2.5">
+          <div className="space-y-2 sm:space-y-2.5">
             {ANALYSIS_STEPS.map((step) => {
               const isCompleted = currentStep > step.id || progress === 100
               const isCurrent = currentStep === step.id && progress < 100
@@ -147,7 +147,7 @@ export default function AIAnalysisPage() {
               return (
                 <div
                   key={step.id}
-                  className={`flex items-start gap-3.5 rounded-xl border p-3.5 transition-all ${
+                  className={`flex items-start gap-2.5 sm:gap-3.5 rounded-xl border p-2.5 sm:p-3.5 transition-all ${
                     isCurrent
                       ? 'border-teal-500 bg-teal-50/70 dark:bg-teal-950/40 shadow-xs ring-1 ring-teal-400/40'
                       : isCompleted
@@ -156,7 +156,7 @@ export default function AIAnalysisPage() {
                   }`}
                 >
                   <div
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                    className={`flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full text-[11px] sm:text-xs font-bold mt-0.5 ${
                       isCompleted
                         ? 'bg-emerald-600 text-white'
                         : isCurrent
@@ -164,11 +164,11 @@ export default function AIAnalysisPage() {
                         : 'bg-slate-100 text-slate-500 dark:bg-slate-800'
                     }`}
                   >
-                    {isCompleted ? <CheckCircle2 className="h-4 w-4" /> : step.id}
+                    {isCompleted ? <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : step.id}
                   </div>
 
-                  <div className="space-y-0.5 flex-1">
-                    <div className="flex items-center justify-between">
+                  <div className="space-y-0.5 flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center justify-between gap-1">
                       <p
                         className={`text-xs font-bold ${
                           isCurrent
@@ -191,7 +191,7 @@ export default function AIAnalysisPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
+                    <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
                       {step.desc}
                     </p>
                   </div>
@@ -205,14 +205,14 @@ export default function AIAnalysisPage() {
             <p className="font-semibold text-slate-800 dark:text-slate-200 mb-0.5">
               Strict Medical Diagnostic Safeguard:
             </p>
-            <p>
+            <p className="text-[11px] sm:text-xs">
               ThyroBiomeAI does not prescribe pharmaceuticals or make definitive diagnoses. Output is structured as educational and supportive guidance for clinician review.
             </p>
           </div>
         </CardContent>
 
-        <CardFooter className="flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
-          <p className="text-xs text-slate-400">
+        <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 border-t border-slate-100 pt-4 dark:border-slate-800">
+          <p className="text-xs text-slate-400 text-center sm:text-left">
             {isRunning ? 'Analyzing and validating output...' : 'Ready to generate full report.'}
           </p>
           
@@ -221,7 +221,7 @@ export default function AIAnalysisPage() {
               type="button"
               variant="gradient"
               onClick={handleStartAnalysis}
-              className="h-11 px-6 font-semibold"
+              className="h-10 sm:h-11 px-6 font-semibold w-full sm:w-auto"
             >
               <Sparkles className="mr-2 h-4 w-4" />
               Analyze My Report
@@ -231,13 +231,13 @@ export default function AIAnalysisPage() {
               type="button"
               variant="default"
               onClick={() => router.push(`/patient/reports/${completedReportId}`)}
-              className="bg-emerald-600 hover:bg-emerald-700"
+              className="bg-emerald-600 hover:bg-emerald-700 w-full sm:w-auto"
             >
               View Generated Report
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
-            <Button disabled variant="secondary" className="gap-2">
+            <Button disabled variant="secondary" className="gap-2 w-full sm:w-auto">
               <Loader2 className="h-4 w-4 animate-spin" />
               Running Analysis...
             </Button>

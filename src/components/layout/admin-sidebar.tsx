@@ -19,7 +19,7 @@ interface AdminSidebarProps {
   newAlertsCount?: number
 }
 
-const adminNavItems = [
+export const adminNavItems = [
   {
     title: 'Admin Dashboard',
     href: '/admin/dashboard',

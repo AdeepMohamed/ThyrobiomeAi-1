@@ -54,13 +54,13 @@ export default function GutHealthPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-5 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
-          <Stethoscope className="h-6 w-6 text-teal-600" />
-          Gut Health & Microbiome Parameters
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <Stethoscope className="h-5 w-5 sm:h-6 sm:w-6 text-teal-600 shrink-0" />
+          <span>Gut Health & Microbiome Parameters</span>
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">
           Explore the bidirectional Gut-Thyroid Axis to generate targeted candidate interventions
         </p>
       </div>
@@ -68,7 +68,7 @@ export default function GutHealthPage() {
       <Card className="shadow-xs">
         <form onSubmit={handleSubmit}>
           <CardHeader>
-            <CardTitle className="text-lg">Gastrointestinal Profile</CardTitle>
+            <CardTitle className="text-base sm:text-lg">Gastrointestinal Profile</CardTitle>
             <CardDescription>
               Digestive motility, mucosal integrity, and microbial balance directly influence thyroid hormone conversion
             </CardDescription>
@@ -95,7 +95,7 @@ export default function GutHealthPage() {
             {/* GI Sensations Matrix */}
             <div className="space-y-3">
               <Label>Digestive Sensations & Motility</Label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {[
                   { id: 'bloating', label: 'Abdominal Bloating / Distension' },
                   { id: 'constipation', label: 'Constipation / Sluggish Motility' },
@@ -106,18 +106,18 @@ export default function GutHealthPage() {
                   return (
                     <div
                       key={symptom.id}
-                      className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5 dark:border-slate-800 dark:bg-slate-900/60"
+                      className="rounded-xl border border-slate-200 bg-slate-50/50 p-3 sm:p-3.5 dark:border-slate-800 dark:bg-slate-900/60"
                     >
                       <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 mb-2">
                         {symptom.label}
                       </p>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="grid grid-cols-4 gap-1 sm:flex sm:flex-wrap">
                         {(['NONE', 'MILD', 'MODERATE', 'SEVERE'] as const).map((lvl) => (
                           <button
                             key={lvl}
                             type="button"
                             onClick={() => setFormData({ ...formData, [key]: lvl })}
-                            className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+                            className={`rounded-lg px-1.5 sm:px-2.5 py-1 text-[11px] sm:text-xs font-medium text-center transition-all cursor-pointer ${
                               formData[key] === lvl
                                 ? lvl === 'SEVERE'
                                   ? 'bg-rose-600 text-white font-bold'
@@ -207,9 +207,9 @@ export default function GutHealthPage() {
             </div>
 
             {/* Microbiome Sequencing / Stool Test (Future-Ready Section) */}
-            <div className="rounded-2xl border border-indigo-100 bg-gradient-to-r from-indigo-50/50 via-sky-50/30 to-purple-50/40 p-4 dark:border-indigo-950 dark:from-indigo-950/20 dark:to-slate-900 space-y-3">
+            <div className="rounded-2xl border border-indigo-100 bg-gradient-to-r from-indigo-50/50 via-sky-50/30 to-purple-50/40 p-3.5 sm:p-4 dark:border-indigo-950 dark:from-indigo-950/20 dark:to-slate-900 space-y-3">
               <div className="flex items-start gap-3">
-                <div className="rounded-xl bg-indigo-600/10 p-2 text-indigo-700 dark:text-indigo-300 mt-0.5">
+                <div className="rounded-xl bg-indigo-600/10 p-2 text-indigo-700 dark:text-indigo-300 mt-0.5 shrink-0">
                   <Dna className="h-5 w-5" />
                 </div>
                 <div className="space-y-1 flex-1">
@@ -222,7 +222,7 @@ export default function GutHealthPage() {
                 </div>
               </div>
 
-              <label className="flex items-center gap-2 text-xs font-medium text-indigo-950 dark:text-indigo-200 cursor-pointer pl-2">
+              <label className="flex items-center gap-2 text-xs font-medium text-indigo-950 dark:text-indigo-200 cursor-pointer pl-1">
                 <input
                   type="checkbox"
                   checked={formData.stoolSampleAvailable}
@@ -241,7 +241,7 @@ export default function GutHealthPage() {
                 />
               ) : (
                 <div className="flex items-center gap-2 rounded-xl bg-white/70 px-3 py-2 text-xs text-slate-500 dark:bg-slate-900/60">
-                  <Info className="h-3.5 w-3.5 text-indigo-500" />
+                  <Info className="h-3.5 w-3.5 text-indigo-500 shrink-0" />
                   <span>Microbiome data not available. Analysis will focus on clinical symptoms & dietary fiber axes.</span>
                 </div>
               )}
@@ -259,11 +259,11 @@ export default function GutHealthPage() {
             </div>
           </CardContent>
 
-          <CardFooter className="flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
-            <p className="text-xs text-slate-400">
+          <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 border-t border-slate-100 pt-4 dark:border-slate-800">
+            <p className="text-xs text-slate-400 text-center sm:text-left">
               Next: Run 7-Step Grok AI Analysis
             </p>
-            <Button type="submit" variant="gradient" disabled={isSaving}>
+            <Button type="submit" variant="gradient" disabled={isSaving} className="w-full sm:w-auto">
               {isSaving ? 'Saving...' : 'Save & Proceed to AI Analysis'}
               {!isSaving && <Sparkles className="ml-2 h-4 w-4" />}
             </Button>
