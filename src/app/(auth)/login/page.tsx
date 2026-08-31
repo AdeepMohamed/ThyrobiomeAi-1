@@ -36,9 +36,9 @@ export default function LoginPage() {
         return
       }
 
-      // Full navigation guarantees session cookie transmission to middleware
       const targetUrl = email.toLowerCase().includes('admin') ? '/admin/dashboard' : '/patient/dashboard'
-      window.location.href = targetUrl
+      router.push(targetUrl)
+      router.refresh()
     } catch {
       setError('An unexpected error occurred during sign in. Please try again.')
       setIsLoading(false)

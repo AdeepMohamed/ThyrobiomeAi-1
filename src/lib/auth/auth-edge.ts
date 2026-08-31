@@ -3,6 +3,7 @@ import Credentials from 'next-auth/providers/credentials'
 
 // Lightweight auth config for Edge middleware — no heavy imports (bcrypt, prisma, zod)
 export const authConfig = {
+  trustHost: true,
   providers: [
     Credentials({
       name: 'Credentials',
@@ -45,7 +46,7 @@ export const authConfig = {
     strategy: 'jwt' as const,
     maxAge: 30 * 24 * 60 * 60,
   },
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
 }
 
 export const { auth: authMiddleware } = NextAuth(authConfig)
