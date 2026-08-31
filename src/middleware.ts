@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { auth } from '@/auth'
+import { authMiddleware } from '@/lib/auth/auth-edge'
 
-export default auth((req) => {
+export default authMiddleware((req) => {
   const { nextUrl } = req
   const pathname = nextUrl.pathname
 
